@@ -1,93 +1,224 @@
-# charts
+# Helm Chart for OAI Next Generation Node B (OAI-gNB) Fronthaul 7.2
 
+**These charts are not finalized so the documentation is not complete. Please do not ask for any support on mailing list**
 
+These charts are only tested on Openshift.
 
-## Getting started
+## Introduction
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+To know more about the feature set of OpenAirInterface you can check it [here](https://gitlab.eurecom.fr/oai/openairinterface5g/-/blob/develop/doc/FEATURE_SET.md#openairinterface-5g-nr-feature-set). 
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+The [codebase](https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop) for gNB, CU, DU, CU-CP/CU-UP, NR-UE is the same. 
 
-## Add your files
+It is strongly recommended that you read about [OAI 7.2 implementation](https://gitlab.eurecom.fr/oai/openairinterface5g/-/blob/develop/doc/ORAN_FHI7.2_Tutorial.md?ref_type=heads)
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## Prerequisite
+
+1. Configure the baremetal gNB/DU server as mentioned in this [tutorial](https://gitlab.eurecom.fr/oai/openairinterface5g/-/blob/develop/doc/ORAN_FHI7.2_Tutorial.md?ref_type=heads#configure-your-server) 
+2. Before using the helm-charts you have to create two dedicated `SriovNetworkNodePolicy` for C and U plane. 
+
+Using below Kubernetes manifest
+
+```yaml
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:      
+  name: RESOURCE_NAME_U_PLANE
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: RESOURCE_NAME_U_PLANE
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  priority: 11
+  mtu: 9216
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'PHYSICAL_INTERFACE#0-1'     # Same device specified by rootDevices
+    rootDevices:
+      - 'PCI_ADDRESS_OF_THE_PHYSICAL_INTERFACE' # PCI bus address
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:      
+  name: RESOURCE_NAME_C_PLANE
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: RESOURCE_NAME_C_PLANE
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  priority: 12
+  mtu: 9216
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'PHYSICAL_INTERFACE#2-3'     # Same device specified by rootDevices
+    rootDevices:
+      - 'PCI_ADDRESS_OF_THE_PHYSICAL_INTERFACE' # PCI bus address
+```
+
+## How to configure the charts
+
+The helm chart of OAI-GNB creates multiples Kubernetes resources,
+
+1. Service
+2. Role Base Access Control (RBAC) (role and role bindings)
+3. Deployment
+4. Configmap
+5. Service account
+6. Network-attachment-definition (Optional only when multus is used)
+
+The directory structure
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.eurecom.fr/oai/orchestration/charts.git
-git branch -M main
-git push -uf origin main
+.
+├── Chart.yaml
+├── templates
+│   ├── configmap.yaml (All the configuration is there)
+│   ├── deployment.yaml
+│   ├── _helpers.tpl
+│   ├── multus.yaml
+│   ├── NOTES.txt
+│   ├── rbac.yaml
+│   ├── serviceaccount.yaml
+│   └── service.yaml
+└── values.yaml
 ```
 
-## Integrate with your tools
+## Container Images 
 
-- [ ] [Set up project integrations](https://gitlab.eurecom.fr/oai/orchestration/charts/-/settings/integrations)
+For openshift you have to [build images](https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/fhi-container/openshift?ref_type=heads). 
 
-## Collaborate with your team
+For Ubuntu you can pull the image from docker-hub --> https://hub.docker.com/r/arorasagar/oai-gnb-fhi72
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Parameters
 
-## Test and Deploy
+[Values.yaml](./values.yaml) contains all the configurable parameters. Below table defines the configurable parameters. You need a dedicated interface for Fronthaul and N2. 
 
-Use the built-in continuous integration in GitLab.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+|Parameter                       |Allowed Values                 |Remark                                          |
+|--------------------------------|-------------------------------|------------------------------------------------|
+|kubernetesType                  |Vanilla/Openshift              |Vanilla Kubernetes or Openshift                 |
+|nfimage.repository              |Image Name                     |                                                |
+|nfimage.version                 |Image tag                      |                                                |
+|nfimage.pullPolicy              |IfNotPresent or Never or Always|                                                |
+|imagePullSecrets.name           |String                         |Good to use for docker hub                      |
+|serviceAccount.create           |true/false                     |                                                |
+|serviceAccount.annotations      |String                         |                                                |
+|serviceAccount.name             |String                         |                                                |
+|podSecurityContext.runAsUser    |Integer (0,65534)              |                                                |
+|podSecurityContext.runAsGroup   |Integer (0,65534)              |                                                |
+|multus.defaultGateway           |Ip-Address                     |default route in the pod                        |
+|multus.n2Interface.create       |true/false                     |                                                |
+|multus.n2Interface.IPadd        |Ip-Address                     |                                                |
+|multus.n2Interface.Netmask      |Netmask                        |                                                |
+|multus.n2Interface.Gateway      |Ip-Address                     |                                                |
+|multus.n2Interface.hostInterface|host interface                 |Host interface of the machine where pod will run|
+|multus.n2Interface.routes       |Json                           |Routes you want to add in the pod               |
+|multus.n3Interface.create       |true/false                     |(Optional not necessary)                                                |
+|multus.n3Interface.IPadd        |Ip-Address)                    |                                                |
+|multus.n3Interface.Netmask      |Netmask                        |                                                |
+|multus.n3Interface.Gateway      |Ip-Address                     |                                                |
+|multus.n3Interface.hostInterface|host interface                 |Host interface of the machine where pod will run|
+|multus.n3Interface.routes       |Json                           |Routes you want to add in the pod               |
 
-***
 
-# Editing this README
+These fields depends on the O-RU and Kubernetes distribution. The `ruInterface.sriovNetworkNamespace` will change with Kubernetes distribution.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+```
+  ruInterface:            #Only needed if using a ethernet based RU/USRP
+    create: true
+    mtu: 9216
+    vlan: 564
+    cPlaneMacAdd: 00:11:22:33:44:66
+    uPlaneMacAdd: 00:11:22:33:44:66 
+    sriovNetworkNamespace: openshift-sriov-network-operator
+    sriovResourceNameCplane: ruvfioc
+    sriovResourceNameUplane: ruvfiou
+```
 
-## Suggestions for a good README
+The config parameters mentioned in `config` block of `values.yaml` are limited on purpose to maintain simplicity. They do not allow changing a lot of parameters of oai-gnb. If you want to use your own configuration file for oai-gnb. It is recommended to copy it in `templates/configmap.yaml`. The command line for gnb is provided in `config.useAdditionalOptions`. 
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+There are certain fields in `templates/configmap.yaml` with `@CONFIG_VALUE@` these fields are very important to configure the CPU threads, mac addresses and PLMN. Apart from these fields you can change any parameter. 
 
-## Name
-Choose a self-explaining name for your project.
+The charts are configured to be used with primary CNI of Kubernetes. When you will mount the configuration file you have to define static ip-addresses for N2, N3 and RU. Most of the primary CNIs do not allow static ip-address allocation. To overcome this we are using multus-cni with static ip-address allocation. 
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## Advanced Debugging Parameters
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Only needed if you are doing advanced debugging
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+|Parameter                        |Allowed Values                 |Remark                                        |
+|---------------------------------|-------------------------------|----------------------------------------------|
+|start.gnb                        |true/false                     |If true gnb container will go in sleep mode   |
+|start.tcpdump                    |true/false                     |If true tcpdump container will go in sleepmode|
+|includeTcpDumpContainer          |true/false                     |If false no tcpdump container will be there   |
+|tcpdumpimage.repository          |Image Name                     |                                              |
+|tcpdumpimage.version             |Image tag                      |                                              |
+|tcpdumpimage.pullPolicy          |IfNotPresent or Never or Always|                                              |
+|persistent.sharedvolume          |true/false                     |Save the pcaps in a shared volume with NRF    |
+|readinessProbe                   |true/false                     |default true                                  |
+|livenessProbe                    |true/false                     |default false                                 |
+|terminationGracePeriodSeconds    |5                              |In seconds (default 5)                        |
+|nodeSelector                     |Node label                     |                                              |
+|nodeName                         |Node Name                      |                                              |
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Depending on your distribution of Kubernetes cluster `resources.limits.nf.sriovXplaneClaim.name` will change. 
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+```
+resources:
+  define: true
+  limits:
+    nf:
+      cpu: 8
+      memory: 8Gi
+      # size of the hugepages is 1 Gi
+      hugepages: 10Gi
+      sriovCplaneClaim:
+        name: openshift.io/ruvfioc
+        quantity: 1
+      sriovUplaneClaim:
+        name: openshift.io/ruvfiou
+        quantity: 1
+    #If tcpdump container is disabled this value will not be used
+    tcpdump:
+      cpu: 100m
+      memory: 128Mi
+  requests:
+    nf:
+      cpu: 8
+      memory: 8Gi
+      # size of the hugepages is 1 Gi
+      hugepages: 10Gi
+      sriovCplaneClaim:
+        name: openshift.io/ruvfioc
+        quantity: 1
+      sriovUplaneClaim:
+        name: openshift.io/ruvfiou
+        quantity: 1
+    #If tcpdump container is disabled this value will not be used
+    tcpdump:
+      cpu: 100m
+      memory: 128Mi
+```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## How to use
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+1. Check the networking, config parameters of the file in `templates/configmap.yaml`. Once the GNB is configured.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+```bash
+helm install oai-gnb .
+```
 
-## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## Note
+
+1. If you are using multus then make sure it is properly configured and if you don't have a gateway for your multus interface then avoid using gateway and defaultGateway parameter. Either comment them or leave them empty. Wrong gateway configuration can create issues with pod networking and pod will not be able to resolve service names.
