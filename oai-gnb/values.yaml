@@ -94,11 +94,8 @@ securityContext:
   privileged: false
   capabilities:
     add:
-     - NET_ADMIN
      - IPC_LOCK
      - SYS_NICE
-     - SYS_RESOURCE
-     - NET_RAW
      - SYS_ADMIN
     drop:
      - ALL
