@@ -89,6 +89,20 @@ start:
   gnb: true #If false the network function container will run in sleep mode for manually testing
   tcpdump: false
 
+##Only for the NF container
+securityContext:
+  privileged: false
+  capabilities:
+    add:
+     - NET_ADMIN
+     - IPC_LOCK
+     - SYS_NICE
+     - SYS_RESOURCE
+     - NET_RAW
+     - SYS_ADMIN
+    drop:
+     - ALL
+
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
 
 podSecurityContext:

@@ -70,12 +70,7 @@ spec:
             cpu: {{ .Values.resources.limits.nf.cpu | quote }}
         {{- end}}
         securityContext:
-           privileged: true
-           #capabilities:
-           #   add:
-           #    - NET_ADMIN
-           #   drop:
-           #    - ALL
+          {{- toYaml .Values.securityContext | nindent 12 }}
         ports:
         - containerPort: 2152
           name: n3
