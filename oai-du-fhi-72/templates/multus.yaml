@@ -1,0 +1,67 @@
+---
+{{- if .Values.multus.f1Interface.create }}
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition 
+metadata:
+  name: {{ .Release.Name }}-f1
+  labels:
+    app: oai-du
+spec:
+  config: '{ 
+      "cniVersion": "0.3.1",
+      "name": "{{ .Release.Name }}-f1",
+      "plugins": [
+        {
+        "type": "macvlan",
+        "master": {{- cat .Values.multus.f1Interface.hostInterface | nospace | quote }},
+        "mode": "bridge",
+        "ipam": {
+          "type": "static",
+          "addresses": [
+                  {
+                          "address": {{- cat .Values.multus.f1Interface.IPadd "/" .Values.multus.f1Interface.Netmask | nospace | quote }}
+                          {{- if .Values.multus.f1Interface.Gateway }}
+                          ,"gateway": {{- cat .Values.multus.f1Interface.Gateway | nospace | quote }}
+                          {{- end }}
+                  }
+          ]
+          {{- if .Values.multus.f1Interface.routes }}
+          ,"routes":  {{- .Values.multus.f1Interface.routes | toJson }}
+          {{- end }}
+        }
+      }
+    ]
+    }'
+{{- end }}
+{{- if .Values.multus.ruInterface.create }}
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.config.ruName }}-uplane
+  namespace:  {{ .Values.multus.ruInterface.sriovNetworkNamespace }}
+  labels:
+    app: oai-du
+spec:
+  networkNamespace: {{ .Release.Namespace }}
+  resourceName:  {{ .Values.multus.ruInterface.sriovResourceNameUplane }}
+  vlan: {{ .Values.multus.ruInterface.vlan }}
+  spoofChk: "off"
+  trust: "on"
+  capabilities: '{ "mac": true }'
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.config.ruName }}-cplane
+  namespace: {{ .Values.multus.ruInterface.sriovNetworkNamespace }}
+  labels:
+    app: oai-du
+spec:
+  networkNamespace: {{ .Release.Namespace }}
+  resourceName: {{ .Values.multus.ruInterface.sriovResourceNameCplane }}
+  vlan: {{ .Values.multus.ruInterface.vlan }}
+  spoofChk: "off"
+  trust: "on"
+  capabilities: '{ "mac": true }'
+{{- end }}
