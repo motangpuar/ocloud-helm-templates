@@ -1,93 +1,109 @@
-# charts
+# Helm Charts for OpenAirInterface
+
+### OpenAirInterface License
+
+
+- [OAI License Model](https://openairinterface.org/legal/oai-license-model/)
+- [OAI License v1.1](https://openairinterface.org/legal/oai-public-license/)
+
+It is distributed under OAI Public License V1.1.
+
+### Directory Structure
+
+| Component        | Helm Charts           | Description                                                                 |
+|--------------------|---------------------|-------------------------------------------------------------------------|
+| `oai-5g-core`      | [`oai-amf`](./oai-5g-core/oai-amf) | Access and Mobility Function                                           |
+|                    | [`oai-smf`](./oai-5g-core/oai-smf) | Session Management Function                                            |
+|                    | [`oai-upf`](./oai-5g-core/oai-upf) | User Plane Function                                                    |
+|                    | [`oai-nrf`](./oai-5g-core/oai-nrf) | Network Repository Function                                            |
+|                    | [`oai-ausf`](./oai-5g-core/oai-ausf) | Authentication Server Function                                        |
+|                    | [`oai-udm`](./oai-5g-core/oai-udm) | Unified Data Management                                                |
+|                    | [`oai-udr`](./oai-5g-core/oai-udr) | Unified Data Repository                                                |
+|                    | [`oai-nssf`](./oai-5g-core/oai-nssf) | Network Slice Selection Function                                       |
+|                    | [`oai-lmf`](./oai-5g-core/oai-lmf) | Location Management Function                                           |
+|                    | [`oai-traffic-server`](./oai-5g-core/oai-traffic-server) | Traffic generation component                                           |
+|                    | [`oai-5g-basic`](./oai-5g-core/oai-5g-basic) | Basic deployment of 5G Core components                                 |
+|                    | [`oai-5g-mini`](./oai-5g-core/oai-5g-mini) | Minimal deployment of 5G Core components                               |
+|                    | [`oai-5g-advance`](./oai-5g-core/oai-5g-advance) | Advanced deployment with additional configuration                      |
+|                    | [`mysql`](./oai-5g-core/mysql) | Database backend for core components                                   |
+| `oai-5g-ran`       | [`oai-gnb`](./oai-5g-ran/oai-gnb) | 5G gNodeB radio access node                                            |
+|                    | [`oai-du`](./oai-5g-ran/oai-du) | Distributed Unit                                                       |
+|                    | [`oai-cu`](./oai-5g-ran/oai-cu) | Central Unit                                                           |
+|                    | [`oai-cu-cp`](./oai-5g-ran/oai-cu-cp) | Central Unit - Control Plane                                           |
+|                    | [`oai-cu-up`](./oai-5g-ran/oai-cu-up) | Central Unit - User Plane                                              |
+|                    | [`oai-nr-ue`](./oai-5g-ran/oai-nr-ue) | Simulated NR User Equipment                                            |
+| `e2e_scenarios`    | [`case1`](./e2e_scenarios/case1) | End-to-end deployment scenario 1                                       |
+|                    | [`case2`](./e2e_scenarios/case2) | End-to-end deployment scenario 2                                       |
+|                    | [`case3`](./e2e_scenarios/case3) | End-to-end deployment scenario 3                                       |
 
 
 
-## Getting started
+Each component in the Helm charts repository typically contains the following files:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+##### chart.yaml
+This file contains metadata about the Helm chart. It defines the name and version of the chart, and other information that helps Helm identify and manage the chart.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+##### values.yaml
+This file contains default values for the chart, and it is here that users and developers can configure the chart according to their needs by overriding default values during the Helm install or upgrade process.
 
-## Add your files
+##### templates/
+The templates directory contains Kubernetes YAML files that define various resources. These templates include placeholders and logic, written using the Go templating syntax, that Helm will replace at runtime to generate the final Kubernetes manifest files. This allows the resources to be dynamically customized based on the user-defined values and configuration. 
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+##### config.yaml
+The config.yaml file is used in Helm charts to define configuration settings that are specific to the application being deployed.
 
+**NOTE:**
+
+Before using the helm-chart we recommend you to read about the OAI codebase and its working from the documents listed on [OAI GitLab](https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/doc).
+
+The OAI docker images are hosted on [Docker Hub](https://hub.docker.com/u/oaisoftwarealliance).
+
+###  Managing Helm Charts
+
+You should use ```Helm 3.x``` because the charts are using ```apiVersion: v2```.
+
+You can use the below command to check the metadata of the chart locally:
+
+```bash
+helm show chart chart-name
 ```
-cd existing_repo
-git remote add origin https://gitlab.eurecom.fr/oai/orchestration/charts.git
-git branch -M main
-git push -uf origin main
+
+For example:
+
+```bash
+$ cd oai-5g-core/
+$ helm show chart oai-amf
 ```
 
-## Integrate with your tools
+Perform a dependency update whenever you change anything in the sub-charts or if you have recently cloned the repository.
 
-- [ ] [Set up project integrations](https://gitlab.eurecom.fr/oai/orchestration/charts/-/settings/integrations)
+```bash
+helm dependency update
+```
 
-## Collaborate with your team
+For example:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```bash
+cd oai-5g-core/oai-5g-basic/
+helm dependency update
+```
 
-## Test and Deploy
+To list all the dependecies your helm chart relies on:
 
-Use the built-in continuous integration in GitLab.
+```bash
+helm dependency list chart-name
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+For example:
 
-***
+```bash
+$ cd oai-5g-core/
+$ helm dependency list oai-5g-basic/
+```
 
-# Editing this README
+**NOTE:**
+To find all the README files of the components, you can use the below command:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+```bash
+find . -iname "readme*"
+```
