@@ -1,0 +1,41 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: fh-uplane
+  namespace: sriov-network-operator
+spec:
+  resourceName: RESOURCE_NAME_U_PLANE
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  priority: 11
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  mtu: 9216
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'ens7f0#0-1'
+    rootDevices:
+      - '0000:ca:00.0' 
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: fh-cplane
+  namespace: sriov-network-operator
+spec:
+  resourceName: RESOURCE_NAME_C_PLANE
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  priority: 12
+  mtu: 9216
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'ens7f0#2-3'
+    rootDevices:
+      - '0000:ca:00.0' 

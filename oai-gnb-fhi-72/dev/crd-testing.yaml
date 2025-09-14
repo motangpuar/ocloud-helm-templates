@@ -1,0 +1,61 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: sriov-master
+  namespace: sriov-network-operator
+spec:
+  mtu: 9216
+  isRdma: false
+  linkType: 'eth'
+    #deviceType: 'netdevice'
+  deviceType: 'vfio-pci'
+  nicSelector:
+    rootDevices:
+    - '0000:ca:00.0'
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  numVfs: 2
+  priority: 10
+  resourceName: fh_sriov_master
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: sriov-up
+  namespace: sriov-network-operator
+spec:
+  deviceType: 'vfio-pci'
+  mtu: 9216
+  isRdma: false
+  linkType: 'eth'
+  nicSelector:
+    pfNames:
+      - 'ens7f0#0'
+    rootDevices:
+    - '0000:ca:00.0#0'
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  numVfs: 1
+  priority: 11
+  resourceName: fh_sriov_up
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: sriov-cp
+  namespace: sriov-network-operator
+spec:
+  deviceType: 'vfio-pci'
+  mtu: 9216
+  isRdma: false
+  linkType: 'eth'
+  nicSelector:
+    pfNames:
+      - 'ens7f0#1'
+    rootDevices:
+    - '0000:ca:00.0#1'
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  numVfs: 1
+  priority: 12
+  resourceName: fh_sriov_cp

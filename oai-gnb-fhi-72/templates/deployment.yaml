@@ -49,25 +49,29 @@ spec:
         image: "{{ .Values.nfimage.repository }}:{{ .Values.nfimage.version }}"
         imagePullPolicy: {{ .Values.nfimage.pullPolicy }}
         volumeMounts:
+          - name: pci
+            mountPath: /sys/bus/pci/devices
           - mountPath: /dev/hugepages
             name: hugepage
           - mountPath: /opt/oai-gnb/etc
             name: configuration
             # subPath: gnb.conf
+          - mountPath: /dev/vfio
+            name: vfio
         {{- if .Values.resources.define}}
         resources:
           requests:
             {{ .Values.resources.requests.nf.sriovCplaneClaim.name }}: {{ .Values.resources.requests.nf.sriovCplaneClaim.quantity | quote  }}
             {{ .Values.resources.requests.nf.sriovUplaneClaim.name }}: {{ .Values.resources.requests.nf.sriovUplaneClaim.quantity | quote  }}
-            hugepages-1Gi: "10Gi"
             memory: {{ .Values.resources.requests.nf.memory | quote }}
             cpu: {{ .Values.resources.requests.nf.cpu | quote }}
+              #hugepages-1Gi: {{ .Values.resources.requests.nf.hugepages | quote }}
           limits:
             {{ .Values.resources.requests.nf.sriovCplaneClaim.name }}: {{ .Values.resources.requests.nf.sriovCplaneClaim.quantity | quote  }}
             {{ .Values.resources.requests.nf.sriovUplaneClaim.name }}: {{ .Values.resources.requests.nf.sriovUplaneClaim.quantity | quote  }}
-            hugepages-1Gi: "10Gi"
             memory: {{ .Values.resources.limits.nf.memory | quote }}
             cpu: {{ .Values.resources.limits.nf.cpu | quote }}
+            hugepages-1Gi: {{ .Values.resources.requests.nf.hugepages | quote }}
         {{- end}}
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
@@ -97,12 +101,17 @@ spec:
             for v in ${VARS};do N=`echo $v | sed -e "s#@##g"`; E="${E} -e s/${v}/${!N}/g";E="${E#' -e '}";done;
             sed -e ${E} $CONF | tee /tmp/du.conf;
             exec /opt/oai-gnb/bin/nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS;
+            #/bin/sleep infinity;
         {{- else}}
         command:
           - /bin/sleep
           - infinity
         {{- end}}
         env:
+          - name: RTE_HUGE_DIR
+            value: /dev/hugepages
+          - name: RTE_SOCKET_MEM
+            value: "8192,8192"
           - name: TZ
             value: {{ .Values.config.timeZone }}
           - name: USE_ADDITIONAL_OPTIONS
@@ -135,8 +144,9 @@ spec:
            capabilities:
               add:
                - NET_ADMIN
-              drop:
-               - ALL
+               - IPC_LOCK
+               - SYS_ADMIN
+               - SYS_RAWIO
         {{- if .Values.start.tcpdump}}
         command:
           - /bin/sh
@@ -149,12 +159,19 @@ spec:
         {{- end}}
       {{- end }}
       volumes:
+      - name: pci
+        hostPath:
+          path: /sys/bus/pci/devices
       - configMap:
           name: {{ .Chart.Name }}-configmap
         name: configuration
       - emptyDir:
-          medium: HugePages
+          medium: HugePages-1Gi
         name: hugepage
+      - name: vfio
+        hostPath:
+          path: /dev/vfio
+          type: Directory
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
