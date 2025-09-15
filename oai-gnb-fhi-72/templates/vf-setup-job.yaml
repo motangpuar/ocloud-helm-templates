@@ -1,0 +1,54 @@
+{{- if .Values.vfManager.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-vf-setup
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ .Chart.Name }}
+spec:
+  template:
+    spec:
+      hostNetwork: true
+      hostPID: true  # Add this for module loading
+      restartPolicy: OnFailure
+      containers:
+      - name: vf-setup
+        image: "{{ .Values.vfManager.image.repository }}:{{ .Values.vfManager.image.tag }}"
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        env:
+        - name: VF_CONFIG
+          value: |
+            {{- range .Values.vfManager.devices }}
+            {{ .name }}:{{ .numVfs }}:{{ join "," .vfList }}:{{ .driver }}
+            {{- end }}
+        volumeMounts:
+        - name: sys
+          mountPath: /sys
+        - name: dev
+          mountPath: /dev
+        - name: lib-modules  # Add this
+          mountPath: /lib/modules
+          readOnly: true
+        command: ["/scripts/setup-vfs.sh"]
+      volumes:
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: dev
+        hostPath:
+          path: /dev
+      - name: lib-modules  # Add this
+        hostPath:
+          path: /lib/modules
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+{{- end }}

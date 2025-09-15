@@ -1,0 +1,42 @@
+{{- if .Values.vfManager.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-vf-cleanup
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      hostNetwork: true
+      restartPolicy: OnFailure
+      containers:
+      - name: vf-cleanup
+        image: "{{ .Values.vfManager.image.repository }}:{{ .Values.vfManager.image.tag }}"
+        securityContext:
+          privileged: true
+        env:
+        - name: VF_CONFIG
+          value: |
+            {{- range .Values.vfManager.devices }}
+            {{ .name }}|{{ .numVfs }}|{{ join "," .vfList }}|{{ .driver }}
+            {{- end }}
+        volumeMounts:
+        - name: sys
+          mountPath: /sys
+        - name: dev
+          mountPath: /dev
+        command: ["/scripts/cleanup-vfs.sh"]
+      volumes:
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: dev
+        hostPath:
+          path: /dev
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+{{- end }}

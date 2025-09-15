@@ -10,9 +10,9 @@ spec:
   linkType: 'eth'
   nicSelector:
     pfNames:
-      - 'ens7f0#0'
+      - 'ens7f0#0-1'
     rootDevices:
-    - '0000:ca:00.0'
+      - '0000:ca:00.0'
   nodeSelector:
     feature.node.kubernetes.io/network-sriov.capable: "true"
   numVfs: 4
@@ -31,9 +31,9 @@ spec:
   linkType: 'eth'
   nicSelector:
     pfNames:
-      - 'ens7f0#1'
+      - 'ens7f0#2-3'
     rootDevices:
-    - '0000:ca:00.0'
+      - '0000:ca:00.0'
   nodeSelector:
     feature.node.kubernetes.io/network-sriov.capable: "true"
   numVfs: 4

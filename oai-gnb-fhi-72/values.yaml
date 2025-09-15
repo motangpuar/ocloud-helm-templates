@@ -167,6 +167,28 @@ affinity: {}
 
 terminationGracePeriodSeconds: 5
 
-nodeSelector: {}
+nodeSelector:
+  kubernetes.io/hostname: "rhel-r750"
 
 nodeName: 
+
+vfManager:
+  enabled: false
+  image:
+    repository: bmw.ece.ntust.edu.tw/infidel/dpdk-init
+    tag: "rhel9"
+    pullPolicy: Always
+  
+  # SR-IOV Configuration  
+  devices:
+    - name: "ens7f0"
+      pciAddress: "0000:ca:00.0"
+      numVfs: 2
+      vfList: ["0000:ca:01.0", "0000:ca:01.1"]
+      driver: "vfio-pci"
+  
+  # Security Context
+  securityContext:
+    privileged: true
+    runAsUser: 0
+
