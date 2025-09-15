@@ -49,10 +49,10 @@ data:
     #  downlinkConfigCommon
         #frequencyInfoDL
           # this is 3450.72 MHz (center frequency)
-          absoluteFrequencySSB                                          = 623328;
+          absoluteFrequencySSB                                          = {{ .Values.config.absoluteFrequencySSB }};
           dl_frequencyBand                                              = 78;
           # this is 3401.58 MHz
-          dl_absoluteFrequencyPointA                                    = 620052;
+          dl_absoluteFrequencyPointA                                    = {{ .Values.config.dl_absoluteFrequencyPointA }};
           #scs-SpecificCarrierList
             dl_offstToCarrier                                           = 0;
     # subcarrierSpacing
@@ -284,21 +284,22 @@ data:
       file_prefix = "fhi_72";
       fh_config = ({
         Tadv_cp_dl = 125;
-        T2a_cp_dl = (259, 500);
-        T2a_cp_ul = (25, 500);
-        T2a_up = (134, 375);
-        Ta3 = (152, 160);
-        T1a_cp_dl = (419, 470);
-        T1a_cp_ul = (285, 336);
-        T1a_up = (294, 345);
-        Ta4 = (0, 200);
+        T2a_cp_dl = (74, 464);
+        T2a_cp_ul = (36, 392);
+        T2a_up = (80, 464);
+        Ta3 = (84, 120);
+        T1a_cp_dl = (285, 429);
+        T1a_cp_ul = (285, 429);
+        T1a_up = (96, 196);
+        Ta4 = (110, 180);
         ru_config = {
-          iq_width = 9;
-          iq_width_prach = 9;
+          iq_width = 8;
+          iq_width_prach = 8;
           fft_size = 12;
         };
         prach_config = {
           eAxC_offset = 4;
+          kbar = 0;
         };
       });
     };

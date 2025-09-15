@@ -73,6 +73,8 @@ multus:
 # in templates/configmap.yaml
 # Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF 
 config:
+  absoluteFrequencySSB: 630048
+  dl_absoluteFrequencyPointA: 626772
   ruCore: "6"
   l1RXCore: "8"
   l1TXCore: "10"
