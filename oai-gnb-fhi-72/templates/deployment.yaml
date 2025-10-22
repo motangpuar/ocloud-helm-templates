@@ -16,24 +16,27 @@ spec:
       labels:
         {{- include "oai-gnb.selectorLabels" . | nindent 8 }}
         app: oai-gnb
-    {{- if .Values.multus.n2Interface.create }}
+    {{- if or .Values.multus.n2Interface.create .Values.multus.ruInterface.create }}
       annotations:
         cpu-quota.crio.io: "disable"
-        k8s.v1.cni.cncf.io/networks: >-
-          [{
-                 "name": "{{ .Chart.Name }}-n2",
-                 "interface": "n2",
-                 "default-route": ["{{ .Values.multus.defaultGateway }}"]
-          }
+        k8s.v1.cni.cncf.io/networks: |
+          [
+          {{- if .Values.multus.n2Interface.create }}
+            {
+              "name": "{{ .Chart.Name }}-n2",
+              "interface": "n2", 
+              "default-route": ["{{ .Values.multus.defaultGateway }}"]
+            }{{ if .Values.multus.ruInterface.create }},{{ end }}
+          {{- end }}
           {{- if .Values.multus.ruInterface.create }}
-          ,{
-                 "name": "{{ .Chart.Name }}-{{ .Values.config.ruName }}-uplane",
-                 "mac": "{{ .Values.multus.ruInterface.uPlaneMacAdd }}"
-          }
-          ,{
-                 "name": "{{ .Chart.Name }}-{{ .Values.config.ruName }}-cplane",
-                 "mac":  "{{ .Values.multus.ruInterface.cPlaneMacAdd }}"
-          }
+            {
+              "name": "{{ .Chart.Name }}-{{ .Values.config.ruName }}-uplane",
+              "mac": "{{ .Values.multus.ruInterface.uPlaneMacAdd }}"
+            },
+            {
+              "name": "{{ .Chart.Name }}-{{ .Values.config.ruName }}-cplane", 
+              "mac": "{{ .Values.multus.ruInterface.cPlaneMacAdd }}"
+            }
           {{- end }}
           ]
     {{- end }}
@@ -95,7 +98,7 @@ spec:
             U_PLANE_PCI_ADD=$(echo ${!PCI_ADD_U});
             C_PLANE_PCI_ADD=$(echo ${!PCI_ADD_C});
             LIST=($(grep -oP '@[a-zA-Z0-9_]+@' $CONF | grep CORE | sed -e "s#@##g" ));
-            CPUS=($(cat /sys/fs/cgroup/cpuset/cpuset.cpus | awk '/-/{for (i=$1; i<=$2; i++)printf "%s%s",i,ORS;next} 1' ORS=' ' RS=, FS=-));
+            CPUS=($(awk '/Cpus_allowed_list/{print $2}' /proc/self/status | awk '/-/{for (i=$1; i<=$2; i++)printf "%s%s",i,ORS;next} 1' ORS=' ' RS=, FS=-));
             for i in ${!LIST[*]}; do eval "${LIST[$i]}=${CPUS[$i]}";done;
             VARS=$(grep -oP '@[a-zA-Z0-9_]+@' $CONF);
             for v in ${VARS};do N=`echo $v | sed -e "s#@##g"`; E="${E} -e s/${v}/${!N}/g";E="${E#' -e '}";done;

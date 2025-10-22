@@ -4,9 +4,10 @@ metadata:
   name: fh-uplane
   namespace: sriov-network-operator
 spec:
-  resourceName: RESOURCE_NAME_U_PLANE
+  resourceName: fh_sriov_up
   nodeSelector:
     feature.node.kubernetes.io/network-sriov.capable: "true"
+    kubernetes.io/hostname: worker-rt-00
   priority: 11
   deviceType: vfio-pci
   isRdma: false
@@ -17,7 +18,7 @@ spec:
     pfNames:
       - 'ens7f0#0-1'
     rootDevices:
-      - '0000:ca:00.0' 
+      - '0000:ca:00.0'
 ---
 apiVersion: sriovnetwork.openshift.io/v1
 kind: SriovNetworkNodePolicy
@@ -25,9 +26,10 @@ metadata:
   name: fh-cplane
   namespace: sriov-network-operator
 spec:
-  resourceName: RESOURCE_NAME_C_PLANE
+  resourceName: fh_sriov_cp
   nodeSelector:
     feature.node.kubernetes.io/network-sriov.capable: "true"
+    kubernetes.io/hostname: worker-rt-00
   priority: 12
   mtu: 9216
   deviceType: vfio-pci
@@ -38,4 +40,48 @@ spec:
     pfNames:
       - 'ens7f0#2-3'
     rootDevices:
-      - '0000:ca:00.0' 
+      - '0000:ca:00.0'
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: fh-cplane-w01
+  namespace: sriov-network-operator
+spec:
+  resourceName: fh_sriov_cp_w01
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+    kubernetes.io/hostname: worker-rt-01
+  priority: 13
+  mtu: 9216
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'enp129s0f3#0-1'
+    rootDevices:
+      - '0000:81:00.3'
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: fh-uplane-w01
+  namespace: sriov-network-operator
+spec:
+  resourceName: fh_sriov_up_w01
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+    kubernetes.io/hostname: worker-rt-01
+  priority: 14
+  mtu: 9216
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'enp129s0f3#2-3'
+    rootDevices:
+      - '0000:81:00.3'

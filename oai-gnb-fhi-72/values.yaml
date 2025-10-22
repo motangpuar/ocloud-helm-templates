@@ -1,16 +1,20 @@
-kubernetesType: Openshift  #Vanilla for community kubernetes distribution else Openshift for Openshift
+kubernetesType: Vanilla  #Vanilla for community kubernetes distribution else Openshift for Openshift
 
 ## In case of using these charts on Openshift then please use UBI images
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
-  repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
-  version: rhel9
-    #repository: docker.io/arorasagar/oai-gnb-fhi72
-    #version: fhi-container # image tag or develop
-  # pullPolicy: IfNotPresent or Never or Always
+  # BMW Branch
+  # repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
+  # version: rhel9
+
+  # Develop Branch
+  repository: oaisoftwarealliance/oai-gnb-fhi72
+  version: 2025.w30
+
+
   pullPolicy: IfNotPresent
 
-# good to use when pulling images from docker-hub mention 
+# good to use when pulling images from docker-hub mention
 #imagePullSecrets:
 # - name: "regcred"
 
@@ -27,18 +31,18 @@ serviceAccount:
 
 # These helm-charts can be used for two purpose
 # 1. RFSimulated oai-gNB: Only requires 1 interface for N2 and N3. You can use Kubernetes default interface eth0
-# 2. Physical gNB with Ethernet based USRP or RRU: You need to use ruInterface to connect with RU. Make sure that the ip-address you choose can reach to RU. 
-#                                                 Using a dedicated interface for N2 or N3 is optional you can still use eth0. 
+# 2. Physical gNB with Ethernet based USRP or RRU: You need to use ruInterface to connect with RU. Make sure that the ip-address you choose can reach to RU.
+#                                                 Using a dedicated interface for N2 or N3 is optional you can still use eth0.
 # 3. Another thing you can chose to use same virtual interface for N2/N3 its optional to have two different
 
-## NOTE: To use these charts with USRP B210 you need to modify and mount usb from the host. 
+## NOTE: To use these charts with USRP B210 you need to modify and mount usb from the host.
 ## Change these ip-addresses according to your environment
 
 multus:
   # if default gatway is empty then it will be removed
-  defaultGateway: "172.21.11.254"
+  #defaultGateway: "172.21.11.254"
   n2Interface:
-    create: true
+    create: false
     # #name inside the pod is hardcoded right now
     # name: "n2"
     IPadd: "172.21.10.1"
@@ -61,39 +65,45 @@ multus:
     hostInterface: "bond0"      # Interface of the host machine on which this pod will be scheduled
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
-    mtu: 9216
-    vlan: 4 #vvdn 4 benetel 3
+    mtu: 9600
+    vlan: 6 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
     sriovNetworkNamespace: sriov-network-operator
     sriovResourceNameCplane: fh_sriov_cp
     sriovResourceNameUplane: fh_sriov_up
 
-## If you want to change more configuration parameters then you should mount the config file  
+## If you want to change more configuration parameters then you should mount the config file
 # in templates/configmap.yaml
-# Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF 
+# Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF
 config:
+  # Summer
   absoluteFrequencySSB: 630048
   dl_absoluteFrequencyPointA: 626772
-  ruCore: "6"
-  l1RXCore: "8"
-  l1TXCore: "10"
-  systemCore: "0"
-  ioCore: "4"
-  workerCores: "2"
+  # OAI
+  #absoluteFrequencySSB: 623328
+  #dl_absoluteFrequencyPointA: 620052
+  # Claude
+  #absoluteFrequencySSB: 641280
+  #dl_absoluteFrequencyPointA: 638004
   timeZone: "Europe/Paris"
-  useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
-  gnbName: "oai-gnb"
-  mcc: "208"   # check the information with AMF, SMF, UPF
-  mnc: "99"    # check the information with AMF, SMF, UPF
+  #useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
+  useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
+  gnbName: "oai-gnb-00"
+  mcc: "001"   # check the information with AMF, SMF, UPF
+  mnc: "01"    # check the information with AMF, SMF, UPF
   tac: "1"     # check the information with AMF
   sst: "1"  #currently only 4 standard values are allowed 1,2,3,4
-  ruCPlaneMacAdd: 00:aa:ff:bb:ff:cc #benetel 70:b3:d5:e1:5b:ff
-  ruUPlaneMacAdd: 00:aa:ff:bb:ff:cc #benetel 70:b3:d5:e1:5b:ff
-  amfhost: "172.21.6.5"  # amf ip-address or service-name oai-amf-svc or 172.21.6.94
-  n2IfName: "n2"    # if multus.n2Interface.create is true then use n2
-  n3IfName: "n2"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0 
+  #LiteON
+  ruCPlaneMacAdd: 00:aa:ff:bb:ff:cc #liteon 00:aa:ff:bb:ff:cc
+  ruUPlaneMacAdd: 00:aa:ff:bb:ff:cc #liteon 00:aa:ff:bb:ff:cc
 
+  #amfhost: "oai-amf.oai-cn"  # amf ip-address or service-name oai-amf-svc or 172.21.6.94
+  #amfhost: "10.0.6.246"  # Open5GS Kubernetes
+  #amfhost: "open5gs-amf-ngap.5gs-cn"
+  amfhost: "192.168.8.108" # BMW Open5GS
+  n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
+  n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 
 ## Debugging section
 start:
@@ -103,12 +113,12 @@ start:
 ##Only for the NF container
 securityContext:
   privileged: true
-    # capabilities:
-    #   add:
-    #    - IPC_LOCK
-    #    - SYS_NICE
-    #    - SYS_ADMIN
-    #    - SYS_RAWIO
+  capabilities:
+    add:
+     - IPC_LOCK
+     - SYS_NICE
+     - SYS_ADMIN
+     - SYS_RAWIO
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
 
@@ -123,18 +133,18 @@ tcpdumpimage:
    #pullPolicy: IfNotPresent or Never or Always
    pullPolicy: IfNotPresent
 
-## NF is the network function and tcpdump is the tcpdump container. 
-## To know more about request and limit it is better to understand that how Kubernetes QoS works. 
+## NF is the network function and tcpdump is the tcpdump container.
+## To know more about request and limit it is better to understand that how Kubernetes QoS works.
 ## https://kubernetes.io/docs/concepts/configuration/manage-resources-containers
 ## https://kubernetes.io/docs/concepts/workloads/pods/pod-qos
 resources:
   define: true
   limits:
     nf:
-      cpu: 8
+      cpu: 20
       memory: 16Gi
       # size of the hugepages is 1 Gi
-      hugepages: 16Gi
+      hugepages: 10Gi
         #hugepages: 10Gi
       sriovCplaneClaim:
         name: openshift.io/fh_sriov_cp
@@ -148,10 +158,10 @@ resources:
       memory: 128Mi
   requests:
     nf:
-      cpu: 8
+      cpu: 20
       memory: 16Gi
       # size of the hugepages is 1 Gi
-      hugepages: 16Gi
+      hugepages: 10Gi
       sriovCplaneClaim:
         name: openshift.io/fh_sriov_cp
         quantity: 1
@@ -170,27 +180,6 @@ affinity: {}
 terminationGracePeriodSeconds: 5
 
 nodeSelector:
-  kubernetes.io/hostname: "rhel-r750"
+  kubernetes.io/hostname: "worker-rt-00"
 
-nodeName: 
-
-vfManager:
-  enabled: false
-  image:
-    repository: bmw.ece.ntust.edu.tw/infidel/dpdk-init
-    tag: "rhel9"
-    pullPolicy: Always
-  
-  # SR-IOV Configuration  
-  devices:
-    - name: "ens7f0"
-      pciAddress: "0000:ca:00.0"
-      numVfs: 2
-      vfList: ["0000:ca:01.0", "0000:ca:01.1"]
-      driver: "vfio-pci"
-  
-  # Security Context
-  securityContext:
-    privileged: true
-    runAsUser: 0
-
+nodeName:
