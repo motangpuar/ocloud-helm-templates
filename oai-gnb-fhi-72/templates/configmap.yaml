@@ -28,6 +28,7 @@ data:
         pdsch_AntennaPorts_N1 = 2;
         maxMIMO_layers        = 2;
         pusch_AntennaPorts    = 4;
+        maxMIMO_layers        = 2;
         do_CSIRS              = 1;
         do_SRS                = 0 ;
         sib1_tda        = 15;
@@ -288,7 +289,7 @@ data:
         Ta3 = (130, 170);
         T1a_cp_dl = (285, 429);
         T1a_cp_ul = (285, 429);
-        T1a_up = (96, 196);
+        T1a_up = (100, 250);
         Ta4 = (110, 180);
         ru_config = {
           iq_width = 9;
