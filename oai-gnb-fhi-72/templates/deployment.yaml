@@ -172,8 +172,9 @@ spec:
       - configMap:
           name: {{ .Chart.Name }}-configmap
         name: configuration
-      - emptyDir:
-          medium: HugePages-1Gi
+      - hostPath:
+          type: Directory
+          path: /dev/hugepages
         name: hugepage
       - name: vfio
         hostPath:
