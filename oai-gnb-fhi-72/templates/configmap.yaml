@@ -174,10 +174,13 @@ data:
       tr_n_preference             = "local_RRC";
       pusch_TargetSNRx10          = 220;
       pucch_TargetSNRx10          = 220;
-      ul_bler_target_upper        = .35;
-      ul_bler_target_lower        = .15;
+      ul_bler_target_upper        = .25; # Default .35
+      ul_bler_target_lower        = .10; # deafult .15
       pusch_FailureThres          = 100;
       ul_max_mcs                  = 28;
+      #dl_max_mcs                  = 24; # Depend Situation
+      min_grant_prb               = 5; # Just Added
+      min_grant_mcs               = 9; # Just Added
     }
     );
 
@@ -209,7 +212,7 @@ data:
       sf_extension                  = 0;
       eNB_instances  = [0];
       ru_thread_core = @RU_CORE@;
-      sl_ahead       = 10;
+      sl_ahead       = 12; # Default 10
       tr_preference  = "raw_if4p5"; # important: activate FHI7.2
       do_precoding   = 0; # needs to match O-RU configuration
     }
@@ -256,10 +259,14 @@ data:
       ru_addr = ("{{ .Values.config.ruCPlaneMacAdd }}", "{{ .Values.config.ruUPlaneMacAdd }}");
       mtu = {{ .Values.multus.ruInterface.mtu }};
       fh_config = ({
-        T1a_cp_dl = (285, 470);
-        T1a_cp_ul = (285, 429);
-        T1a_up = (100, 300);
-        Ta4 = (110, 180);
+        # T1a_cp_dl = (285, 470);
+        # T1a_cp_ul = (285, 429);
+        # T1a_up = (100, 300);
+        # Ta4 = (110, 180);
+        T1a_cp_dl = (285, 550);  # Increased upper bound from 470 to 520
+        T1a_cp_ul = (285, 520);  # Increased from 429 to 480
+        T1a_up = (100, 400);     # Increased from 300 to 350
+        Ta4 = (110, 280);        # Increased from 180 to 230
         ru_config = {
           iq_width = 9;
           iq_width_prach = 9;

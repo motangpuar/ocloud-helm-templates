@@ -87,9 +87,9 @@ config:
   #absoluteFrequencySSB: 641280
   #dl_absoluteFrequencyPointA: 638004
   timeZone: "Europe/Paris"
-  #useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
-  useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
-  gnbName: "oai-gnb-00"
+  useAdditionalOptions: "--log_config.global_log_options level,nocolor,time"
+    #useAdditionalOptions: "--thread-pool 8,9,10,11,12,13,14,15 --log_config.global_log_options level,nocolor,time" # Develop Branch
+  gnbName: "oai-gnb-02"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
   tac: "1"     # check the information with AMF
@@ -140,8 +140,8 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 15
-      memory: 16Gi
+      cpu: 14
+      memory: 40Gi
       # size of the hugepages is 1 Gi
       hugepages: 10Gi
         #hugepages: 10Gi
@@ -157,8 +157,8 @@ resources:
       memory: 128Mi
   requests:
     nf:
-      cpu: 15
-      memory: 16Gi
+      cpu: 14
+      memory: 40Gi
       # size of the hugepages is 1 Gi
       hugepages: 10Gi
       sriovCplaneClaim:
