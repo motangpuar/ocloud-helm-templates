@@ -18,17 +18,16 @@ data:
 
         // Tracking area code, 0x0000 and 0xfffe are reserved values
         tracking_area_code  = {{ .Values.config.tac}} ;
-        plmn_list = ({ mcc = {{ .Values.config.mcc}}; mnc = {{ .Values.config.mnc}}; mnc_length = 2; snssaiList = ({ sst = {{ .Values.config.sst}} }) });
+        plmn_list = ({ mcc = {{ .Values.config.mcc}}; mnc = {{ .Values.config.mnc}}; mnc_length = 2; snssaiList = ({ sst = {{ .Values.config.sst}}}) });
 
         nr_cellid = 1;
 
         ////////// Physical parameters:
 
-        pdsch_AntennaPorts_XP = 2; 
+        pdsch_AntennaPorts_XP = 2;
         pdsch_AntennaPorts_N1 = 2;
         maxMIMO_layers        = 2;
         pusch_AntennaPorts    = 4;
-        maxMIMO_layers        = 2;
         do_CSIRS              = 1;
         do_SRS                = 0 ;
         sib1_tda        = 15;
@@ -44,7 +43,7 @@ data:
         servingCellConfigCommon = (
         {
           #spCellConfigCommon
-          
+
                 physCellId                                                    = 0;
                # n_TimingAdvanceOffset                                         = 0;
           #  downlinkConfigCommon
@@ -71,7 +70,7 @@ data:
                 #pdcch-ConfigCommon
                   initialDLBWPcontrolResourceSetZero                          = 11;
                   initialDLBWPsearchSpaceZero                                 = 0;
-          
+
             #uplinkConfigCommon
                #frequencyInfoUL
                 ul_frequencyBand                                              = 78;
@@ -121,33 +120,33 @@ data:
           # restrictedSetConfig
           # 0=unrestricted, 1=restricted type A, 2=restricted type B
                   restrictedSetConfig                                         = 0,
-          
+
           # this is the offset between the last PRACH preamble power and the Msg3 PUSCH, 2 times the field value in dB
                   msg3_DeltaPreamble                                          = 2;
                   p0_NominalWithGrant                                         = -96;
-          
+
           # pucch-ConfigCommon setup :
           # pucchGroupHopping
           # 0 = neither, 1= group hopping, 2=sequence hopping
                   pucchGroupHopping                                           = 0;
                   hoppingId                                                   = 0;
                   p0_nominal                                                  = -96;
-          
+
                 ssb_PositionsInBurst_Bitmap                                   = 0x1;
-          
+
           # ssb_periodicityServingCell
           # 0 = ms5, 1=ms10, 2=ms20, 3=ms40, 4=ms80, 5=ms160, 6=spare2, 7=spare1
                 ssb_periodicityServingCell                                    = 2;
-          
+
           # dmrs_TypeA_position
           # 0 = pos2, 1 = pos3
                 dmrs_TypeA_Position                                           = 0;
-          
+
           # subcarrierSpacing
           # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
                 subcarrierSpacing                                             = 1;
-          
-          
+
+
             #tdd-UL-DL-ConfigurationCommon
           # subcarrierSpacing
           # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
@@ -160,9 +159,9 @@ data:
                 nrofDownlinkSymbols                                           = 6;
                 nrofUplinkSlots                                               = 1;
                 nrofUplinkSymbols                                             = 4;
-          
+
             ssPBCH_BlockPower                                                 = 0;
-          
+
       }
 
       );
@@ -197,7 +196,7 @@ data:
       pusch_TargetSNRx10          = 200;
       pucch_TargetSNRx10          = 200;
       #dl_bler_target_upper=.35;
-      #dl_bler_target_lower=.15; 
+      #dl_bler_target_lower=.15;
       ul_bler_target_upper=.35;
       ul_bler_target_lower=.15;
       pusch_FailureThres          = 100;
