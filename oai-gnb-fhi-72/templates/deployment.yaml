@@ -30,11 +30,11 @@ spec:
           {{- end }}
           {{- if .Values.multus.ruInterface.create }}
             {
-              "name": "{{ .Chart.Name }}-{{ .Values.config.ruName }}-uplane",
+              "name": "{{ .Chart.Name }}-ru-uplane",
               "mac": "{{ .Values.multus.ruInterface.uPlaneMacAdd }}"
             },
             {
-              "name": "{{ .Chart.Name }}-{{ .Values.config.ruName }}-cplane", 
+              "name": "{{ .Chart.Name }}-ru-cplane",
               "mac": "{{ .Values.multus.ruInterface.cPlaneMacAdd }}"
             }
           {{- end }}
@@ -94,13 +94,12 @@ spec:
             AMF_IP_ADDRESS=$(if [[ $AMF_IP_ADDRESS ]]; then echo $AMF_IP_ADDRESS; else echo $AMF_HOST;fi);
             N2_IP_ADDRESS=$(ip -f inet addr show $N2_IF_NAME | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*");
             N3_IP_ADDRESS=$(ip -f inet addr show $N3_IF_NAME | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*");
-            PCI_ADD_U=PCIDEVICE_OPENSHIFT_IO_${SRIOV_RESOURCE_NAME_UPLANE^^};
-            PCI_ADD_C=PCIDEVICE_OPENSHIFT_IO_${SRIOV_RESOURCE_NAME_CPLANE^^};
+            PCI_ADD_U=PCIDEVICE_INTEL_COM_${SRIOV_RESOURCE_NAME_UPLANE^^};
+            PCI_ADD_C=PCIDEVICE_INTEL_COM_${SRIOV_RESOURCE_NAME_CPLANE^^};
             U_PLANE_PCI_ADD=$(echo ${!PCI_ADD_U});
             C_PLANE_PCI_ADD=$(echo ${!PCI_ADD_C});
             LIST=($(grep -oP '@[a-zA-Z0-9_]+@' $CONF | grep CORE | sed -e "s#@##g" ));
-            CGROUP_PATH=$(cat /proc/self/cgroup | cut -d: -f3);
-            CPUS=($(cat /sys/fs/cgroup${CGROUP_PATH}/cpuset.cpus | awk '/-/{for (i=$1; i<=$2; i++)printf "%s%s",i,ORS;next} 1' ORS=' ' RS=, FS=-));
+            CPUS=($(cat /sys/fs/cgroup/cpuset/cpuset.cpus | awk '/-/{for (i=$1; i<=$2; i++)printf "%s%s",i,ORS;next} 1' ORS=' ' RS=, FS=-));
             for i in ${!LIST[*]}; do eval "${LIST[$i]}=${CPUS[$i]}";done;
             VARS=$(grep -oP '@[a-zA-Z0-9_]+@' $CONF);
             for v in ${VARS};do N=`echo $v | sed -e "s#@##g"`; E="${E} -e s/${v}/${!N}/g";E="${E#' -e '}";done;
