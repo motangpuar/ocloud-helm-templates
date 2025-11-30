@@ -1,15 +1,21 @@
 kubernetesType: Vanilla  #Vanilla for community kubernetes distribution else Openshift for Openshift
 
+nfapi:
+  vnf:
+    name: vnf
+  pnf:
+    name: pnf
+
 ## In case of using these charts on Openshift then please use UBI images
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
   # BMW Branch
-  # repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
-  # version: rhel9
+  repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
+  version: rhel9
 
   # Develop Branch
-  repository: oaisoftwarealliance/oai-gnb-fhi72
-  version: 2025.w30
+  # repository: oaisoftwarealliance/oai-gnb-fhi72
+  # version: 2025.w30
 
 
   pullPolicy: IfNotPresent
@@ -25,7 +31,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "oai-gnb-sa-metanoia-jura"
+  name: "oai-gnb-sa"
 
 #service type is fixed to clusterIP, it is only support for non multus interface (eth0)
 
@@ -65,19 +71,19 @@ multus:
     hostInterface: "bond0"      # Interface of the host machine on which this pod will be scheduled
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
-    mtu: 9600
-    vlan: 3 #Metanoia Jura 3, LiteON New 4, Pegatron 103
+    mtu: 9216
+    vlan: 3 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
     sriovNetworkNamespace: sriov-network-operator
-    sriovResourceNameCplane: fh_sriov_cp_lao
-    sriovResourceNameUplane: fh_sriov_up_lao
+    sriovResourceNameCplane: pci_sriov_net_fh_cp
+    sriovResourceNameUplane: pci_sriov_net_fh_up
 
 ## If you want to change more configuration parameters then you should mount the config file
 # in templates/configmap.yaml
 # Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF
 config:
-  # frequency configuration
+  # Pegatron frequency configuration
   absoluteFrequencySSB: 649920  # 3748.8 MHz
   dl_absoluteFrequencyPointA: 646724  # 3700.86 MHz
   # OAI
@@ -87,20 +93,19 @@ config:
   #absoluteFrequencySSB: 641280
   #dl_absoluteFrequencyPointA: 638004
   timeZone: "Europe/Paris"
-  useAdditionalOptions: "--log_config.global_log_options level,nocolor,time"
-    #useAdditionalOptions: "--thread-pool 8,9,10,11,12,13,14,15 --log_config.global_log_options level,nocolor,time" # Develop Branch
-  gnbName: "oai-gnb-02"
+  #useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
+  useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
+  gnbName: "oai-gnb-00"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
   tac: "1"     # check the information with AMF
   sst: "1"  #currently only 4 standard values are allowed 1,2,3,4
+  sd: "66051"
   #LiteON
-  ruCPlaneMacAdd: 00:e0:0c:00:ae:06  # Jura RU MAC address
-  ruUPlaneMacAdd: 00:e0:0c:00:ae:06  # Jura RU MAC address
-  #amfhost: "oai-amf.oai-cn"  # amf ip-address or service-name oai-amf-svc or 172.21.6.94
-  #amfhost: "10.0.6.246"  # Open5GS Kubernetes
+  ruCPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
+  ruUPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
   #amfhost: "open5gs-amf-ngap.5gs-cn"
-  amfhost: "open5gs-amf-ngap.5gs-cn" # BMW Open5GS
+  amfhost: "192.168.8.108" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 
@@ -114,10 +119,9 @@ securityContext:
   privileged: true
   capabilities:
     add:
-     - IPC_LOCK
      - SYS_NICE
-     - SYS_ADMIN
-     - SYS_RAWIO
+     - SYS_RESOURCE
+     - IPC_LOCK
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
 
@@ -140,34 +144,31 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 14
-      memory: 40Gi
-      # size of the hugepages is 1 Gi
+      #cpu: 8
+      windriver.com/isolcpus: 8
+      memory: 16Gi
       hugepages: 10Gi
-        #hugepages: 10Gi
       sriovCplaneClaim:
-        name: openshift.io/fh_sriov_cp_lao
+        name: intel.com/pci_sriov_net_fh_cp
         quantity: 1
       sriovUplaneClaim:
-        name: openshift.io/fh_sriov_up_lao
+        name: intel.com/pci_sriov_net_fh_up
         quantity: 1
-    #If tcpdump container is disabled this value will not be used
     tcpdump:
       cpu: 100m
       memory: 128Mi
   requests:
     nf:
-      cpu: 14
-      memory: 40Gi
-      # size of the hugepages is 1 Gi
+      #cpu: 8
+      windriver.com/isolcpus: 8
+      memory: 16Gi
       hugepages: 10Gi
       sriovCplaneClaim:
-        name: openshift.io/fh_sriov_cp_lao
+        name: intel.com/pci_sriov_net_fh_cp
         quantity: 1
       sriovUplaneClaim:
-        name: openshift.io/fh_sriov_up_lao
+        name: intel.com/pci_sriov_net_fh_up
         quantity: 1
-    #If tcpdump container is disabled this value will not be used
     tcpdump:
       cpu: 100m
       memory: 128Mi
@@ -179,6 +180,11 @@ affinity: {}
 terminationGracePeriodSeconds: 5
 
 nodeSelector:
-  kubernetes.io/hostname: "lavoisier"
+  specialized: "radio"
+  kubernetes.io/hostname: "joule"
 
-nodeName:
+tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "5g-radio"
+    effect: "NoSchedule"
