@@ -10,12 +10,12 @@ nfapi:
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
   # BMW Branch
-  # repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
-  # version: rhel9
+  repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
+  version: rhel9
 
   # Develop Branch
-  repository: oaisoftwarealliance/oai-gnb-fhi72
-  version: 2025.w30
+  # repository: oaisoftwarealliance/oai-gnb-fhi72
+  # version: 2025.w30
 
 
   pullPolicy: IfNotPresent
@@ -71,7 +71,7 @@ multus:
     hostInterface: "bond0"      # Interface of the host machine on which this pod will be scheduled
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
-    mtu: 9600
+    mtu: 9216
     vlan: 103 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
@@ -104,11 +104,8 @@ config:
   #LiteON
   ruCPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
   ruUPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
-  #amfhost: "oai-amf.oai-cn"  # amf ip-address or service-name oai-amf-svc or 172.21.6.94
-  #amfhost: "10.0.6.246"  # Open5GS Kubernetes
   #amfhost: "open5gs-amf-ngap.5gs-cn"
   amfhost: "192.168.8.108" # BMW Open5GS
-  #amfhost: "192.168.70.132" # BMW OAI CN
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 
@@ -122,10 +119,9 @@ securityContext:
   privileged: true
   capabilities:
     add:
-     - IPC_LOCK
      - SYS_NICE
-     - SYS_ADMIN
-     - SYS_RAWIO
+     - SYS_RESOURCE
+     - IPC_LOCK
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
 
@@ -148,26 +144,24 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 8
+      #cpu: 8
+      windriver.com/isolcpus: 8
       memory: 16Gi
-      # size of the hugepages is 1 Gi
       hugepages: 10Gi
-        #hugepages: 10Gi
       sriovCplaneClaim:
         name: intel.com/pci_sriov_net_fh_cp
         quantity: 1
       sriovUplaneClaim:
         name: intel.com/pci_sriov_net_fh_up
         quantity: 1
-    #If tcpdump container is disabled this value will not be used
     tcpdump:
       cpu: 100m
       memory: 128Mi
   requests:
     nf:
-      cpu: 8
+      #cpu: 8
+      windriver.com/isolcpus: 8
       memory: 16Gi
-      # size of the hugepages is 1 Gi
       hugepages: 10Gi
       sriovCplaneClaim:
         name: intel.com/pci_sriov_net_fh_cp
@@ -175,7 +169,6 @@ resources:
       sriovUplaneClaim:
         name: intel.com/pci_sriov_net_fh_up
         quantity: 1
-    #If tcpdump container is disabled this value will not be used
     tcpdump:
       cpu: 100m
       memory: 128Mi
@@ -187,7 +180,11 @@ affinity: {}
 terminationGracePeriodSeconds: 5
 
 nodeSelector:
+  specialized: "radio"
   kubernetes.io/hostname: "joule"
-  #kubernetes.io/hostname: "lavoisier"
 
-nodeName:
+tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "5g-radio"
+    effect: "NoSchedule"

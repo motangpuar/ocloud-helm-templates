@@ -114,8 +114,6 @@ spec:
         env:
           - name: RTE_HUGE_DIR
             value: /dev/hugepages
-          - name: RTE_SOCKET_MEM
-            value: "8192,8192"
           - name: TZ
             value: {{ .Values.config.timeZone }}
           - name: USE_ADDITIONAL_OPTIONS
@@ -139,9 +137,11 @@ spec:
           requests:
             memory: {{ .Values.resources.requests.tcpdump.memory | quote }}
             cpu: {{ .Values.resources.requests.tcpdump.cpu | quote }}
+            windriver.com/isolcpus: "14"
           limits:
             memory: {{ .Values.resources.limits.tcpdump.memory | quote }}
             cpu: {{ .Values.resources.limits.tcpdump.cpu | quote }}
+            windriver.com/isolcpus: "14"
         {{- end}}
         securityContext:
            privileged: true
@@ -185,6 +185,10 @@ spec:
       {{- if .Values.nodeSelector}}
       nodeSelector: 
          {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.nodeName}}
       nodeName: {{ .Values.nodeName }}
