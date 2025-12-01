@@ -72,7 +72,7 @@ multus:
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
     mtu: 9216
-    vlan: 3 #LiteON New 6 LiteON Old, 4
+    vlan: 6 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
     sriovNetworkNamespace: sriov-network-operator
