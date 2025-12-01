@@ -26,7 +26,7 @@ data:
 
         pdsch_AntennaPorts_XP = 2;
         pdsch_AntennaPorts_N1 = 2;
-        maxMIMO_layers        = 2;
+        maxMIMO_layers        = 4;
         pusch_AntennaPorts    = 4;
         do_CSIRS              = 1;
         do_SRS                = 0 ;

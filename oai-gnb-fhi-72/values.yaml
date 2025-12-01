@@ -102,8 +102,8 @@ config:
   sst: "1"  #currently only 4 standard values are allowed 1,2,3,4
   sd: "66051"
   #LiteON
-  ruCPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
-  ruUPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
+  ruCPlaneMacAdd: 00:aa:ff:bb:ff:cc
+  ruUPlaneMacAdd: 00:aa:ff:bb:ff:cc
   #amfhost: "open5gs-amf-ngap.5gs-cn"
   amfhost: "192.168.8.108" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
