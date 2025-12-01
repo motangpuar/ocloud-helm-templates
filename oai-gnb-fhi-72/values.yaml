@@ -10,12 +10,12 @@ nfapi:
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
   # BMW Branch
-  repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
-  version: rhel9
+  #repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
+  #version: rhel9
 
   # Develop Branch
-  # repository: oaisoftwarealliance/oai-gnb-fhi72
-  # version: 2025.w30
+  repository: oaisoftwarealliance/oai-gnb-fhi72
+  version: 2025.w30
 
 
   pullPolicy: IfNotPresent
@@ -72,7 +72,7 @@ multus:
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
     mtu: 9216
-    vlan: 3 #LiteON New 6 LiteON Old, 4
+    vlan: 103 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
     sriovNetworkNamespace: sriov-network-operator
@@ -93,8 +93,8 @@ config:
   #absoluteFrequencySSB: 641280
   #dl_absoluteFrequencyPointA: 638004
   timeZone: "Europe/Paris"
-  #useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
-  useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
+  useAdditionalOptions: "--log_config.global_log_options level,nocolor,time"
+    #useAdditionalOptions: "--thread-pool 17,19,21,23,25,27,29,31 --log_config.global_log_options level,nocolor,time" # Develop Branch
   gnbName: "oai-gnb-00"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
@@ -104,8 +104,8 @@ config:
   #LiteON
   ruCPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
   ruUPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
-  #amfhost: "open5gs-amf-ngap.5gs-cn"
-  amfhost: "192.168.8.108" # BMW Open5GS
+  amfhost: "open5gs-amf-ngap.5gs-cn"
+  #amfhost: "192.168.8.108" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 
@@ -145,7 +145,7 @@ resources:
   limits:
     nf:
       #cpu: 8
-      windriver.com/isolcpus: 8
+      windriver.com/isolcpus: 14
       memory: 16Gi
       hugepages: 10Gi
       sriovCplaneClaim:
@@ -160,7 +160,7 @@ resources:
   requests:
     nf:
       #cpu: 8
-      windriver.com/isolcpus: 8
+      windriver.com/isolcpus: 14
       memory: 16Gi
       hugepages: 10Gi
       sriovCplaneClaim:

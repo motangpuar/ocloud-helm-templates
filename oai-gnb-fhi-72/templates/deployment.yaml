@@ -69,12 +69,14 @@ spec:
             memory: {{ .Values.resources.requests.nf.memory | quote }}
             cpu: {{ .Values.resources.requests.nf.cpu | quote }}
             hugepages-1Gi: {{ .Values.resources.requests.nf.hugepages | quote }}
+            windriver.com/isolcpus: "15"
           limits:
             {{ .Values.resources.requests.nf.sriovCplaneClaim.name }}: {{ .Values.resources.requests.nf.sriovCplaneClaim.quantity | quote  }}
             {{ .Values.resources.requests.nf.sriovUplaneClaim.name }}: {{ .Values.resources.requests.nf.sriovUplaneClaim.quantity | quote  }}
             memory: {{ .Values.resources.limits.nf.memory | quote }}
             cpu: {{ .Values.resources.limits.nf.cpu | quote }}
             hugepages-1Gi: {{ .Values.resources.requests.nf.hugepages | quote }}
+            windriver.com/isolcpus: "15"
         {{- end}}
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
@@ -104,6 +106,8 @@ spec:
             VARS=$(grep -oP '@[a-zA-Z0-9_]+@' $CONF);
             for v in ${VARS};do N=`echo $v | sed -e "s#@##g"`; E="${E} -e s/${v}/${!N}/g";E="${E#' -e '}";done;
             sed -e ${E} $CONF | tee /tmp/du.conf;
+            ip link set dev eth0 mtu 9216;
+            yes > /dev/null &
             exec /opt/oai-gnb/bin/nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS;
             #/bin/sleep infinity;
         {{- else}}
@@ -137,11 +141,9 @@ spec:
           requests:
             memory: {{ .Values.resources.requests.tcpdump.memory | quote }}
             cpu: {{ .Values.resources.requests.tcpdump.cpu | quote }}
-            windriver.com/isolcpus: "14"
           limits:
             memory: {{ .Values.resources.limits.tcpdump.memory | quote }}
             cpu: {{ .Values.resources.limits.tcpdump.cpu | quote }}
-            windriver.com/isolcpus: "14"
         {{- end}}
         securityContext:
            privileged: true
