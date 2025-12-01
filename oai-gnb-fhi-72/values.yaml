@@ -66,12 +66,12 @@ multus:
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
     mtu: 9600
-    vlan: 6 #LiteON New 6 LiteON Old, 4
+    vlan: 103 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
     sriovNetworkNamespace: sriov-network-operator
-    sriovResourceNameCplane: fh_sriov_cp
-    sriovResourceNameUplane: fh_sriov_up
+    sriovResourceNameCplane: fh_sriov_cp_lao
+    sriovResourceNameUplane: fh_sriov_up_lao
 
 ## If you want to change more configuration parameters then you should mount the config file
 # in templates/configmap.yaml
@@ -141,16 +141,16 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 20
+      cpu: 12
       memory: 16Gi
       # size of the hugepages is 1 Gi
       hugepages: 10Gi
         #hugepages: 10Gi
       sriovCplaneClaim:
-        name: openshift.io/fh_sriov_cp
+        name: openshift.io/fh_sriov_cp_lao
         quantity: 1
       sriovUplaneClaim:
-        name: openshift.io/fh_sriov_up
+        name: openshift.io/fh_sriov_up_lao
         quantity: 1
     #If tcpdump container is disabled this value will not be used
     tcpdump:
@@ -158,15 +158,15 @@ resources:
       memory: 128Mi
   requests:
     nf:
-      cpu: 20
+      cpu: 12
       memory: 16Gi
       # size of the hugepages is 1 Gi
       hugepages: 10Gi
       sriovCplaneClaim:
-        name: openshift.io/fh_sriov_cp
+        name: openshift.io/fh_sriov_cp_lao
         quantity: 1
       sriovUplaneClaim:
-        name: openshift.io/fh_sriov_up
+        name: openshift.io/fh_sriov_up_lao
         quantity: 1
     #If tcpdump container is disabled this value will not be used
     tcpdump:
@@ -180,6 +180,6 @@ affinity: {}
 terminationGracePeriodSeconds: 5
 
 nodeSelector:
-  kubernetes.io/hostname: "worker-rt-00"
+  kubernetes.io/hostname: "lavoisier"
 
 nodeName:
