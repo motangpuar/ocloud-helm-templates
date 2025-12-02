@@ -93,8 +93,8 @@ config:
   #absoluteFrequencySSB: 641280
   #dl_absoluteFrequencyPointA: 638004
   timeZone: "Europe/Paris"
-  useAdditionalOptions: "--log_config.global_log_options level,nocolor,time"
-    #useAdditionalOptions: "--thread-pool 17,19,21,23,25,27,29,31 --log_config.global_log_options level,nocolor,time" # Develop Branch
+    #useAdditionalOptions: "--log_config.global_log_options level,nocolor,time"
+  useAdditionalOptions: "--thread-pool 17,19,21,23,25,27,29,31 --log_config.global_log_options level,nocolor,time" # Develop Branch
   gnbName: "oai-gnb-00"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
@@ -104,8 +104,9 @@ config:
   #LiteON
   ruCPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
   ruUPlaneMacAdd: 48:21:0b:4b:93:8e  # Pegatron RU MAC address
-  amfhost: "open5gs-amf-ngap.5gs-cn"
-  #amfhost: "192.168.8.108" # BMW Open5GS
+    #amfhost: "open5gs-amf-ngap.5gs-cn"
+    #amfhost: "192.168.8.108" # BMW Open5GS
+  amfhost: "192.168.8.82" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 

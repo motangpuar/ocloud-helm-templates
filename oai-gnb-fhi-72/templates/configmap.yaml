@@ -205,7 +205,7 @@ data:
       num_cc = 1;
       tr_n_preference = "local_mac";
       prach_dtx_threshold = 130;
-      pucch0_dtx_threshold = 40; # Default 80
+      pucch0_dtx_threshold = 80;
       pusch_dtx_threshold = 10;
       max_ldpc_iterations = 15;
       tx_amp_backoff_dB = 12; # needs to match O-RU configuration
