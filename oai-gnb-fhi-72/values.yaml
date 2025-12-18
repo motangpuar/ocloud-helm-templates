@@ -15,7 +15,7 @@ nfimage:   # image name either locally present or in a public/private repository
 
   # Develop Branch
   repository: oaisoftwarealliance/oai-gnb-fhi72
-  version: 2025.w30
+  version: 2025.w40
 
 
   pullPolicy: IfNotPresent
@@ -71,8 +71,8 @@ multus:
     hostInterface: "bond0"      # Interface of the host machine on which this pod will be scheduled
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
-    mtu: 9600
-    vlan: 6 #LiteON New 6 LiteON Old, 4
+    mtu: 1500
+    vlan: 5 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
     sriovNetworkNamespace: sriov-network-operator
@@ -93,33 +93,49 @@ config:
   sst: "1"  #currently only 4 standard values are allowed 1,2,3,4
   sd: "66051"
   #LiteON
-  ruCPlaneMacAdd: 00:aa:ff:bb:ff:cc
-  ruUPlaneMacAdd: 00:aa:ff:bb:ff:cc
+  ruCPlaneMacAdd: 10:70:fd:14:1c:10
+  ruUPlaneMacAdd: 10:70:fd:14:1c:10
   #amfhost: "open5gs-amf-ngap.5gs-cn"
   amfhost: "192.168.8.108" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 
 fhi72:
-  dpdk_iova_mode: "VA"
+  dpdk_iova_mode: "PA"
   file_prefix: "fhi_72"
-  T1a_cp_dl:
-    min: 285
-    max: 429
-  T1a_cp_ul:
-    min: 285
-    max: 429
-  T1a_up:
-    min: 96
-    max: 196
-  Ta4:
-    min: 110
-    max: 180
-  ru_config:
-    iq_width: 9
-    iq_width_prach: 9
-  prach_config:
-    kbar: 0
+  fh_config:
+    timings:
+      Tadv_cp_dl: 125
+      T2a_cp_dl:
+        min: 259
+        max: 470
+      T2a_cp_ul:
+        min: 100
+        max: 1400
+      T2a_up:
+        min: 70
+        max: 345
+      Ta3:
+        min: 50
+        max: 171
+      T1a_cp_dl:
+        min: 258
+        max: 392
+      T1a_cp_ul:
+        min: 200
+        max: 400
+      T1a_up:
+        min: 155
+        max: 300
+      Ta4:
+        min: 0
+        max: 200
+    ru_config:
+      iq_width: 9
+      iq_width_prach: 9
+      fft_size: 12
+    prach_config:
+      eAxC_offset: 2
 
 ## Debugging section
 start:
