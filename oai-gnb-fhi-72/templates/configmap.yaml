@@ -86,7 +86,7 @@ data:
               initialULBWPsubcarrierSpacing                               = 1;
             #rach-ConfigCommon
               #rach-ConfigGeneric
-                prach_ConfigurationIndex                                  = 159;
+                prach_ConfigurationIndex                                  = 151;
       #prach_msg1_FDM
       #0 = one, 1=two, 2=four, 3=eight
                 prach_msg1_FDM                                            = 0;
@@ -235,7 +235,7 @@ data:
       sf_extension                  = 0;
       eNB_instances  = [0];
       ru_thread_core = @RU_CORE@;
-      sl_ahead       = 12;
+      sl_ahead       = 5;
       ##beamforming 1x2 matrix: 1 layer x 2 antennas
       bf_weights = [0x00007fff, 0x0000,0x00007fff, 0x0000];
       tr_preference  = "raw_if4p5"; # important: activate FHI7.2
@@ -278,7 +278,7 @@ data:
       dpdk_iova_mode = "{{ .Values.fhi72.dpdk_iova_mode }}";
       system_core = @SYSTEM_CORE@;
       io_core = @IO_CORE@;
-      worker_cores = (@WORKER_CORE_0@, @WORKER_CORE_1@);
+      worker_cores = (@WORKER_CORE_0@);
       du_addr = ("{{ .Values.multus.ruInterface.cPlaneMacAdd }}", "{{ .Values.multus.ruInterface.uPlaneMacAdd }}");
       ru_addr = ("{{ .Values.config.ruCPlaneMacAdd }}", "{{ .Values.config.ruUPlaneMacAdd }}");
       mtu = {{ .Values.multus.ruInterface.mtu }};

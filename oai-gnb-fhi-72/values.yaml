@@ -15,7 +15,7 @@ nfimage:   # image name either locally present or in a public/private repository
 
   # Develop Branch
   repository: oaisoftwarealliance/oai-gnb-fhi72
-  version: 2025.w40
+  version: 2024.w30
 
 
   pullPolicy: IfNotPresent
@@ -84,8 +84,8 @@ multus:
 # Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF
 config:
   timeZone: "Europe/Paris"
-  #useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
-  useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
+  useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
+  #useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
   gnbName: "oai-gnb-00"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
@@ -96,7 +96,7 @@ config:
   ruCPlaneMacAdd: 10:70:fd:14:1c:10
   ruUPlaneMacAdd: 10:70:fd:14:1c:10
   #amfhost: "open5gs-amf-ngap.5gs-cn"
-  amfhost: "192.168.8.108" # BMW Open5GS
+  amfhost: "192.168.8.21" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 
@@ -110,8 +110,8 @@ fhi72:
         min: 259
         max: 470
       T2a_cp_ul:
-        min: 100
-        max: 1400
+        min: 125
+        max: 1200
       T2a_up:
         min: 70
         max: 345
@@ -122,8 +122,8 @@ fhi72:
         min: 258
         max: 392
       T1a_cp_ul:
-        min: 200
-        max: 400
+        min: 285
+        max: 300
       T1a_up:
         min: 155
         max: 300

@@ -1,0 +1,1536 @@
+Active_gNBs = ( "oai-gnb-00");
+# Asn1_verbosity, choice in: none, info, annoying
+Asn1_verbosity = "none";
+gNBs =
+(
+ {
+    ////////// Identification parameters:
+    gNB_ID    =  0xe12;
+    gNB_name  =  "oai-gnb-00";
+
+    // Tracking area code, 0x0000 and 0xfffe are reserved values
+    tracking_area_code  = 1 ;
+    plmn_list = ({ mcc = 001; mnc = 01; mnc_length = 2; snssaiList = ({ sst = 1}) });
+
+    nr_cellid = 1;
+
+    ////////// Physical parameters:
+
+    pdsch_AntennaPorts_XP = 2;
+    pusch_AntennaPorts    = 2;
+    do_CSIRS              = 1;
+    do_SRS                = 0;
+    force_256qam_off      = 1;
+    sib1_tda        = 15;
+
+    pdcch_ConfigSIB1 = (
+        {
+          controlResourceSetZero = 11;
+          searchSpaceZero = 0;
+        }
+      );
+
+    servingCellConfigCommon = (
+    {
+            #spCellConfigCommon
+  
+        physCellId                                                    = 0;
+       # n_TimingAdvanceOffset                                         = 0;
+  #  downlinkConfigCommon
+      #frequencyInfoDL
+        # this is 3450.72 MHz (center frequency)
+        absoluteFrequencySSB                                          = 630048;
+        dl_frequencyBand                                              = 78;
+        # this is 3401.58 MHz
+        dl_absoluteFrequencyPointA                                    = 626772;
+        #scs-SpecificCarrierList
+          dl_offstToCarrier                                           = 0;
+  # subcarrierSpacing
+  # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
+          dl_subcarrierSpacing                                        = 1;
+          dl_carrierBandwidth                                         = 273;
+       #initialDownlinkBWP
+        #genericParameters
+         initialDLBWPlocationAndBandwidth                             = 1099; #38.101-1 Table 5.3.2-1
+         #
+  # subcarrierSpacing
+  # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
+          initialDLBWPsubcarrierSpacing                               = 1;
+        #pdcch-ConfigCommon
+          initialDLBWPcontrolResourceSetZero                          = 11;
+          initialDLBWPsearchSpaceZero                                 = 0;
+  
+    #uplinkConfigCommon
+       #frequencyInfoUL
+        ul_frequencyBand                                              = 78;
+        #scs-SpecificCarrierList
+        ul_offstToCarrier                                             = 0;
+  # subcarrierSpacing
+  # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
+        ul_subcarrierSpacing                                          = 1;
+        ul_carrierBandwidth                                           = 273;
+        pMax                                                          = 23;
+       #initialUplinkBWP
+        #genericParameters
+          initialULBWPlocationAndBandwidth                            = 1099;
+  # subcarrierSpacing
+  # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
+          initialULBWPsubcarrierSpacing                               = 1;
+        #rach-ConfigCommon
+          #rach-ConfigGeneric
+            prach_ConfigurationIndex                                  = 151;
+  #prach_msg1_FDM
+  #0 = one, 1=two, 2=four, 3=eight
+            prach_msg1_FDM                                            = 0;
+            prach_msg1_FrequencyStart                                 = 0;
+            zeroCorrelationZoneConfig                                 = 0;
+            preambleReceivedTargetPower                               = -100;
+  #preamblTransMax (0...10) = (3,4,5,6,7,8,10,20,50,100,200)
+            preambleTransMax                                          = 7;
+  #powerRampingStep
+  # 0=dB0,1=dB2,2=dB4,3=dB6
+          powerRampingStep                                            = 3;
+  #ra_ReponseWindow
+  #1,2,4,8,10,20,40,80
+          ra_ResponseWindow                                           = 5;
+  #ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR
+  #1=oneeighth,2=onefourth,3=half,4=one,5=two,6=four,7=eight,8=sixteen
+          ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR                = 3;
+  #oneHalf (0..15) 4,8,12,16,...60,64
+          ssb_perRACH_OccasionAndCB_PreamblesPerSSB                   = 15;
+  #ra_ContentionResolutionTimer
+  #(0..7) 8,16,24,32,40,48,56,64
+          ra_ContentionResolutionTimer                                = 7;
+          rsrp_ThresholdSSB                                           = 19;
+  #prach-RootSequenceIndex_PR
+  #1 = 839, 2 = 139
+          prach_RootSequenceIndex_PR                                  = 2;
+          prach_RootSequenceIndex                                     = 1;
+          # SCS for msg1, can only be 15 for 30 kHz < 6 GHz, takes precendence over the one derived from prach-ConfigIndex
+          #
+          msg1_SubcarrierSpacing                                      = 1,
+  # restrictedSetConfig
+  # 0=unrestricted, 1=restricted type A, 2=restricted type B
+          restrictedSetConfig                                         = 0,
+  
+  # this is the offset between the last PRACH preamble power and the Msg3 PUSCH, 2 times the field value in dB
+          msg3_DeltaPreamble                                          = 2;
+          p0_NominalWithGrant                                         = -96;
+  
+  # pucch-ConfigCommon setup :
+  # pucchGroupHopping
+  # 0 = neither, 1= group hopping, 2=sequence hopping
+          pucchGroupHopping                                           = 0;
+          hoppingId                                                   = 0;
+          p0_nominal                                                  = -96;
+  # ssb_PositionsInBurs_BitmapPR
+  # 1=short, 2=medium, 3=long
+        ssb_PositionsInBurst_PR                                       = 2;
+        ssb_PositionsInBurst_Bitmap                                   = 0x1;
+  
+  # ssb_periodicityServingCell
+  # 0 = ms5, 1=ms10, 2=ms20, 3=ms40, 4=ms80, 5=ms160, 6=spare2, 7=spare1
+        ssb_periodicityServingCell                                    = 2;
+  
+  # dmrs_TypeA_position
+  # 0 = pos2, 1 = pos3
+        dmrs_TypeA_Position                                           = 0;
+  
+  # subcarrierSpacing
+  # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
+        subcarrierSpacing                                             = 1;
+  
+  
+    #tdd-UL-DL-ConfigurationCommon
+  # subcarrierSpacing
+  # 0=kHz15, 1=kHz30, 2=kHz60, 3=kHz120
+        referenceSubcarrierSpacing                                    = 1;
+        # pattern1
+        # dl_UL_TransmissionPeriodicity
+        # 0=ms0p5, 1=ms0p625, 2=ms1, 3=ms1p25, 4=ms2, 5=ms2p5, 6=ms5, 7=ms10
+        dl_UL_TransmissionPeriodicity                                 = 6;
+        nrofDownlinkSlots                                             = 7;
+        nrofDownlinkSymbols                                           = 6;
+        nrofUplinkSlots                                               = 2;
+        nrofUplinkSymbols                                             = 4;
+  
+    ssPBCH_BlockPower                                                 = 10;
+
+  }
+
+  );
+
+    # ------- SCTP definitions
+    SCTP :
+    {
+        # Number of streams to use in input/output
+        SCTP_INSTREAMS  = 2;
+        SCTP_OUTSTREAMS = 2;
+    };
+
+
+    ////////// AMF parameters:
+    amf_ip_address = ({ ipv4 = "192.168.8.21"; });
+
+    NETWORK_INTERFACES :
+    {
+        GNB_IPV4_ADDRESS_FOR_NG_AMF              = "172.16.241.211";
+        GNB_IPV4_ADDRESS_FOR_NGU                 = "172.16.241.211";
+        GNB_PORT_FOR_S1U                         = 2152; # Spec 2152
+    };
+  }
+);
+
+
+MACRLCs = (
+{
+  num_cc                      = 1;
+  tr_s_preference             = "local_L1";
+  tr_n_preference             = "local_RRC";
+  pusch_TargetSNRx10          = 300;
+  pucch_TargetSNRx10          = 230;
+  dl_bler_target_upper=.35;
+  dl_bler_target_lower=.15;
+  ul_bler_target_upper=.35;
+  ul_bler_target_lower=.15;
+  pusch_FailureThres          = 100;
+  ul_max_mcs                  = 28;
+}
+);
+
+
+L1s = (
+{
+  num_cc = 1;
+  tr_n_preference = "local_mac";
+  prach_dtx_threshold = 130;
+  pucch0_dtx_threshold = 80;
+  pusch_dtx_threshold = 10;
+  max_ldpc_iterations = 10;
+  tx_amp_backoff_dB = 20; # needs to match O-RU configuration
+  L1_rx_thread_core = 3;
+  L1_tx_thread_core = 5; # relevant after merge of l1_tx_thread
+  phase_compensation = 0; # needs to match O-RU configuration
+}
+);
+
+RUs = (
+{
+  local_rf       = "no";
+  nb_tx          = 2;
+  nb_rx          = 2;
+  att_tx         = 0
+  att_rx         = 0;
+  bands          = [78];
+  max_pdschReferenceSignalPower = -27;
+  max_rxgain                    = 75;
+  sf_extension                  = 0;
+  eNB_instances  = [0];
+  ru_thread_core = 7;
+  sl_ahead       = 10;
+  ##beamforming 1x2 matrix: 1 layer x 2 antennas
+  bf_weights = [0x00007fff, 0x0000,0x00007fff, 0x0000];
+  tr_preference  = "raw_if4p5"; # important: activate FHI7.2
+  do_precoding = 0; # needs to match O-RU configuration
+}
+);
+
+security = {
+  # preferred ciphering algorithms
+  # the first one of the list that an UE supports in chosen
+  # valid values: nea0, nea1, nea2, nea3
+  ciphering_algorithms = ( "nea0" );
+
+  # preferred integrity algorithms
+  # the first one of the list that an UE supports in chosen
+  # valid values: nia0, nia1, nia2, nia3
+  integrity_algorithms = ( "nia2", "nia0" );
+
+  # setting 'drb_ciphering' to "no" disables ciphering for DRBs, no matter
+  # what 'ciphering_algorithms' configures; same thing for 'drb_integrity'
+  drb_ciphering = "yes";
+  drb_integrity = "no";
+};
+
+log_config :
+{
+  global_log_level                      ="info";
+  hw_log_level                          ="info";
+  phy_log_level                         ="info";
+  mac_log_level                         ="info";
+  rlc_log_level                         ="info";
+  pdcp_log_level                        ="info";
+  rrc_log_level                         ="info";
+  ngap_log_level                        ="info";
+  f1ap_log_level                        ="info";
+};
+
+fhi_72 = {
+  dpdk_devices = ("0000:ca:01.3", "0000:ca:01.2");
+  dpdk_iova_mode = "VA";
+  system_core = 11;
+  io_core = 13;
+  worker_cores = (15);
+  du_addr = ("00:11:22:33:44:66", "00:11:22:33:44:66");
+  ru_addr = ("10:70:fd:14:1c:10", "10:70:fd:14:1c:10");
+  mtu = 1500;
+  file_prefix = "fhi_72";
+  fh_config = ({
+      T1a_cp_dl = (258, 392);
+      T1a_cp_ul = (285, 300);
+      T1a_up = (155, 300);
+      T2a_cp_dl = (259, 470);
+      T2a_cp_ul = (125, 1200);
+      T2a_up = (70, 345);
+      Ta3 = (50, 171);
+      Ta4 = (0, 200);
+      Tadv_cp_dl = 125;
+      ru_config = {
+        fft_size = 12;
+        iq_width = 9;
+        iq_width_prach = 9;
+      };
+      prach_config = {
+        eAxC_offset = 2;
+      };
+    });
+};
+432194.128444 [ENB_APP] I nfapi (0) running mode: MONOLITHIC
+432194.128459 [GNB_APP] I Getting GNBSParams
+432195.128802 [OPT] I OPT disabled
+432195.128808 [HW] I Version: Branch: HEAD Abrev. Hash: bd721c3bdb Date: Tue Jul 30 16:24:27 2024 +0000
+432195.128866 [NR_PHY] I RC.gNB = 0x563fc758bee0
+432195.129478 [NR_PHY] I PRB blacklist 
+432195.129485 [NR_PHY] I Copying 0 blacklisted PRB to L1 context
+432195.129501 [PHY] I L1_RX_THREAD_CORE 3 (15)
+432195.129509 [PHY] I TX_AMP = 3276 (-20 dBFS)
+432195.129510 [PHY] I l1_north_init_gNB() RC.nb_nr_L1_inst:1
+432195.129512 [PHY] I Installing callbacks for IF_Module - UL_indication
+432195.129513 [MAC] I Allocating shared L1/L2 interface structure for instance 0 @ 0x563fc7594310
+432195.129515 [PHY] I l1_north_init_gNB() RC.gNB[0] installing callbacks
+432195.129516 [PHY] I create_gNB_tasks() Task ready initialize structures
+432195.129595 [PHY] I No prs_config configuration found..!!
+432195.129649 [GNB_APP] I pdsch_AntennaPorts N1 1 N2 1 XP 2 pusch_AntennaPorts 2
+432195.129653 [GNB_APP] I minTXRXTIME 2
+432195.129654 [GNB_APP] I SIB1 TDA 15
+432195.129658 [GNB_APP] I CSI-RS 1, SRS 0, 256 QAM force off, delta_MCS off, maxMIMO_Layers -1, HARQ feedback enabled
+432195.129666 [GNB_APP] I sr_ProhibitTimer 0, sr_TransMax 64, sr_ProhibitTimer_v1700 0, t300 400, t301 400, t310 2000, n310 10, t311 3000, n311 1, t319 400
+432195.129762 [RRC] I Read in ServingCellConfigCommon (PhysCellId 0, ABSFREQSSB 630048, DLBand 78, ABSFREQPOINTA 626772, DLBW 273,RACH_TargetReceivedPower -100
+432195.129768 [RRC] I absoluteFrequencySSB 630048 corresponds to 3450720000 Hz
+432195.129825 [MAC] I [MAIN] Init function start:nb_nr_macrlc_inst=1
+432195.129844 [UTIL] I threadCreate() for MAC_STATS: creating thread with affinity ffffffff, priority 2
+432195.138531 [PHY] I Installing callbacks for IF_Module - UL_indication
+432195.139024 [NR_MAC] I Configuring common parameters from NR ServingCellConfig
+432195.139032 [NR_MAC] I DL_Bandwidth:100
+432195.139035 [NR_MAC] I DL_Bandwidth:100
+432195.139038 [NR_MAC] I ssb_OffsetPointA 252, ssb_SubcarrierOffset 12
+432195.139040 [NR_MAC] I Set RX antenna number to 2, Set TX antenna number to 2 (num ssb 1: 80000000,0)
+432195.139042 [NR_MAC] I Setting TDD configuration period to 6
+432195.139054 [PHY] I DL frequency 3450720000 Hz, UL frequency 3450720000 Hz: band 78, uldl offset 0 Hz
+432195.139061 [PHY] A Configuring MIB for instance 0, : (Nid_cell 0,DL freq 3450720000, UL freq 3450720000)
+432195.139063 [PHY] I Initializing frame parms for mu 1, N_RB 273, Ncp 0
+432195.139065 [PHY] I Init: N_RB_DL 273, first_carrier_offset 2458, nb_prefix_samples 288,nb_prefix_samples0 352, ofdm_symbol_size 4096
+432195.139133 [PHY] I Doing symbol rotation calculation for TX/RX, f0 3450720000.000000 Hz, Nsymb 28
+432195.139142 [PHY] I Doing symbol rotation calculation for TX/RX, f0 3450720000.000000 Hz, Nsymb 28
+432195.139296 [PHY] I gNB 0 configured
+432195.139314 [NR_MAC] I PUSCH Target 300, PUCCH Target 230, PUCCH Failure 10, PUSCH Failure 100
+432195.139359 [GNB_APP] I F1AP: gNB idx 0 gNB_DU_id 3602, gNB_DU_name oai-gnb-00, TAC 1 MCC/MNC/length 1/1/2 cellID 1
+432195.139364 [GNB_APP] I ngran_DU: Configuring Cell 0 for TDD
+CMDLINE: "/opt/oai-gnb/bin/nr-softmodem" "-O" "/tmp/du.conf" "--log_config.global_log_options" "level,nocolor,time" 
+[LIBCONFIG] Path for include directive set to: /tmp
+[CONFIG] function config_libconfig_init returned 0
+[CONFIG] config module libconfig loaded
+[CONFIG] debug flags: 0x00000000
+log init done
+Reading in command-line options
+[CONFIG] parallel_conf is set to 2
+[CONFIG] worker_conf is set to 1
+Configuration: nb_rrc_inst 1, nb_nr_L1_inst 1, nb_ru 1
+configuring for RAU/RRU
+Initializing northbound interface for L1
+DL frequency 3450720000: band 78, UL frequency 3450720000
+<MeasurementTimingConfiguration>
+    <criticalExtensions>
+        <c1>
+            <measTimingConf>
+                <measTiming>
+                    <MeasTiming>
+                        <frequencyAndTiming>
+                            <carrierFreq>630048</carrierFreq>
+                            <ssbSubcarrierSpacing><kHz30/></ssbSubcarrierSpacing>
+                            <ssb-MeasurementTimingConfiguration>
+                                <periodicityAndOffset>
+                                    <sf20>0</sf20>
+                                </periodicityAndOffset>
+                                <duration><sf1/></duration>
+                            </ssb-MeasurementTimingConfiguration>
+                        </frequencyAndTiming>
+                    </MeasTiming>
+                </measTiming>
+            </measTimingConf>
+        </c1>
+    </criticalExtensions>
+</MeasurementTimingConfiguration>
+432195.139398 [PHY] I create_gNB_tasks() RC.nb_nr_L1_inst:1
+432195.139402 [PHY] I l1_north_init_gNB() RC.nb_nr_L1_inst:1
+432195.139403 [PHY] I Installing callbacks for IF_Module - UL_indication
+432195.139405 [PHY] I l1_north_init_gNB() RC.gNB[0] installing callbacks
+432195.139406 [GNB_APP] I Allocating gNB_RRC_INST for 1 instances
+432195.139540 [GNB_APP] I SDAP layer is disabled
+432195.139544 [GNB_APP] I Data Radio Bearer count 1
+432195.139554 [NR_RRC] I do_SIB23_NR, size 9 
+ 432195.139696 [PDCP] I pdcp init,usegtp 
+432195.139710 [UTIL] I threadCreate() for TASK_SCTP: creating thread with affinity ffffffff, priority 50
+432195.141901 [ITTI] I Created Posix thread TASK_SCTP
+432195.141909 [X2AP] I X2AP is disabled.
+432195.141912 [UTIL] I threadCreate() for TASK_GNB_APP: creating thread with affinity ffffffff, priority 50
+432195.144201 [ITTI] I Created Posix thread TASK_GNB_APP
+432195.144208 [UTIL] I threadCreate() for TASK_RRC_GNB: creating thread with affinity ffffffff, priority 50
+432195.146379 [NR_RRC] I Entering main loop of NR_RRC message task
+432195.146386 [NR_RRC] I Received F1 Setup Request from gNB_DU 3602 (oai-gnb-00) on assoc_id -1
+432195.146396 [RRC] I Accepting DU 3602 (oai-gnb-00), sending F1 Setup Response
+432195.146400 [RRC] I DU uses RRC version 17.3.0
+432195.146405 [MAC] I received F1 Setup Response from CU (null)
+432195.146409 [MAC] I CU uses RRC version 17.3.0
+432195.146410 [MAC] I Clearing the DU's UE states before, if any.
+432195.146433 [ITTI] I Created Posix thread TASK_RRC_GNB
+432195.146476 [GTPU] I Configuring GTPu
+432195.146498 [GTPU] I SA mode 
+432195.146501 [GTPU] I Configuring GTPu address : 172.16.241.211, port : 2152
+432195.146507 [GTPU] I Initializing UDP for local address 172.16.241.211 with port 2152
+432195.146531 [GTPU] I Created gtpu instance id: 98
+432195.146554 [NR_RRC] I Accepting new CU-UP ID 3602 name oai-gnb-00 (assoc_id -1)
+432195.147621 [PHY] I Initializing gNB 0
+432195.147627 [PHY] I Initializing gNB 0
+432195.147628 [PHY] I Registering with MAC interface module (before 0x563fc7594310)
+432195.147629 [PHY] I Installing callbacks for IF_Module - UL_indication
+432195.147630 [PHY] I Registering with MAC interface module (after 0x563fc7594310)
+432195.147632 [PHY] I Setting indication lists
+432195.147638 [PHY] I [nr-gnb.c] gNB structure allocated
+432195.198148 [PHY] I RU GPIO control set as 'generic'
+432195.198154 [PHY] I Setting clock source to internal
+432195.198155 [PHY] I Setting time source to internal
+432195.198188 [PHY] I number of L1 instances 1, number of RU 1, number of CPU cores 32
+432195.198193 [PHY] I Copying frame parms from gNB in RC to gNB 0 in ru 0 and frame_parms in ru
+432195.198510 [PHY] I Initialized RU proc 0 (NGFI_RAU_IF4p5,synch_to_ext_device),
+432195.198523 [UTIL] I threadCreate() for ru_thread: creating thread with affinity 7, priority 97
+432195.200646 [PHY] I Starting RU 0 (NGFI_RAU_IF4p5,synch_to_ext_device) on cpu 5
+432195.200652 [PHY] I Initializing frame parms for mu 1, N_RB 273, Ncp 0
+432195.200654 [PHY] I Init: N_RB_DL 273, first_carrier_offset 2458, nb_prefix_samples 288,nb_prefix_samples0 352, ofdm_symbol_size 4096
+432195.200656 [PHY] I fp->scs=30000
+432195.200658 [PHY] I fp->ofdm_symbol_size=4096
+432195.200658 [PHY] I fp->nb_prefix_samples0=352
+432195.200660 [PHY] I fp->nb_prefix_samples=288
+432195.200661 [PHY] I fp->slots_per_subframe=2
+432195.200662 [PHY] I fp->samples_per_subframe_wCP=114688
+432195.200674 [PHY] I fp->samples_per_frame_wCP=1146880
+432195.200675 [PHY] I fp->samples_per_subframe=122880
+432195.200676 [PHY] I fp->samples_per_frame=1228800
+432195.200677 [PHY] I fp->dl_CarrierFreq=3450720000
+432195.200678 [PHY] I fp->ul_CarrierFreq=3450720000
+432195.200687 [PHY] I fp->Nid_cell=0
+432195.200695 [PHY] I fp->first_carrier_offset=2458
+432195.200703 [PHY] I fp->ssb_start_subcarrier=0
+432195.200704 [PHY] I fp->Ncp=0
+432195.200705 [PHY] I fp->N_RB_DL=273
+432195.200706 [PHY] I fp->numerology_index=1
+432195.200707 [PHY] I fp->nr_band=78
+432195.200708 [PHY] I fp->ofdm_offset_divisor=8
+432195.200709 [PHY] I fp->threequarter_fs=0
+432195.200710 [PHY] I fp->sl_CarrierFreq=0
+432195.200712 [PHY] I fp->N_RB_SL=0
+432195.200720 [PHY] I Initializing RU signal buffers (if_south IF4p5 RRU) nb_tx 2, nb_rx 2
+432195.200722 [PHY] I nb_tx 2
+432195.201367 [PHY] I rxdata_7_5kHz[0] 0x7f9f3b61e040 for RU 0
+432195.201957 [PHY] I rxdata_7_5kHz[1] 0x7f9f3b43d040 for RU 0
+432195.204818 [PHY] I [INIT] common.txdata_BF= 0x7f9f34000960 (16 bytes)
+432195.204953 [PHY] I txdataF_BF[0] 0x7f9f4804a040 for RU 0
+432195.205076 [PHY] I txdataF_BF[1] 0x7f9f3ab0a040 for RU 0
+432195.205332 [PHY] I rxdataF[0] 0x7f9f3aa29040 for RU 0
+432195.205588 [PHY] I rxdataF[1] 0x7f9f3a948040 for RU 0
+432195.216647 [PHY] I [INIT] nr_phy_init_RU() ru->num_gNB:1 
+432195.218133 [PHY] I Setting RF config for N_RB 273, NB_RX 2, NB_TX 2
+432195.218140 [PHY] I tune_offset 0 Hz, sample_rate 122880000 Hz
+432195.218147 [PHY] I Channel 0: setting tx_gain offset 0, tx_freq 3450720000 Hz
+432195.218148 [PHY] I Channel 1: setting tx_gain offset 0, tx_freq 3450720000 Hz
+432195.218150 [PHY] I Channel 0: setting rx_gain offset 0, rx_freq 3450720000 Hz
+432195.218156 [PHY] I Channel 1: setting rx_gain offset 0, rx_freq 3450720000 Hz
+432195.218159 [PHY] I starting transport
+432195.220270 [HW] I Initializing O-RAN 7.2 FH interface through xran library (compiled against headers of oran_e_maintenance_release_v1.3)
+NRRRC 0: Southbound Transport local_mac
+START MAIN THREADS
+RC.nb_nr_L1_inst:1
+Initializing gNB threads wait_for_sync:0
+wait_gNBs()
+Waiting for gNB L1 instances to all get configured ... sleeping 50ms (nb_nr_sL1_inst 1)
+gNB L1 are configured
+About to Init RU threads RC.nb_RU:1
+Initializing RU threads
+configuring RU from file
+Set RU mask to 1
+Creating RC.ru[0]:0x563fc75dd9a0
+RU 0: Transport raw_if4p5
+[RU 0] Setting nr_flag 0, nr_band 78, nr_scs_for_raster 1
+[RU 0] Setting half-slot parallelization to 1
+E2 agent is DISABLED (for activation, define .e2_agent.{near_ric_ip_addr,sm_dir} parameters)
+shlib_path liboai_transpro.so
+[LOADER] library liboai_transpro.so successfully loaded
+xran_fh_init:
+  io_cfg:
+    id 0 (O-DU)
+    num_vfs 2
+    num_rxq 2
+    dpdk_dev [0000:ca:01.3, 0000:ca:01.2, (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), (null), (null)]
+    bbdev_dev (null)
+    bbdev_mode -1
+    dpdkIoVaMode 0
+    dpdkMemorySize 0
+    core 13
+    system_core 11
+    pkt_proc_core 0000000000008000
+    pkt_proc_core_64_127 0000000000000000
+    pkt_aux_core 0
+    timing_core 13
+    port [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ]
+    io_sleep 0
+    nEthLinePerPort 1
+    nEthLineSpeed 10
+    one_vf_cu_plane 0
+    eowd_cmn[0]:
+      initiator_en 0
+      numberOfSamples 0
+      filterType 0
+      responseTo 0
+      measVf 0
+      measState 0
+      measId 0
+      measMethod 0
+      owdm_enable 0
+      owdm_PlLength 0
+    eowd_cmn[1]:
+      initiator_en 0
+      numberOfSamples 0
+      filterType 0
+      responseTo 0
+      measVf 0
+      measState 0
+      measId 0
+      measMethod 0
+      owdm_enable 0
+      owdm_PlLength 0
+    eowd_port[0][0]:
+      t1 0
+      t2 0
+      tr 0
+      delta 0
+      portid 0
+      runMeas 0
+      currentMeasID 0
+      msState 0
+      numMeas 0
+      txDone 0
+      rspTimerIdx 0
+      delaySamples [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      delayAvg 0
+    eowd_port[0][1]:
+      t1 0
+      t2 0
+      tr 0
+      delta 0
+      portid 0
+      runMeas 0
+      currentMeasID 0
+      msState 0
+      numMeas 0
+      txDone 0
+      rspTimerIdx 0
+      delaySamples [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      delayAvg 0
+    eowd_port[1][0]:
+      t1 0
+      t2 0
+      tr 0
+      delta 0
+      portid 0
+      runMeas 0
+      currentMeasID 0
+      msState 0
+      numMeas 0
+      txDone 0
+      rspTimerIdx 0
+      delaySamples [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      delayAvg 0
+    eowd_port[1][1]:
+      t1 0
+      t2 0
+      tr 0
+      delta 0
+      portid 0
+      runMeas 0
+      currentMeasID 0
+      msState 0
+      numMeas 0
+      txDone 0
+      rspTimerIdx 0
+      delaySamples [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      delayAvg 0
+  eAxCId_conf:
+    mask_cuPortId 0xf000
+    mask_bandSectorId 0x0f00
+    mask_ccId 0x00f0
+    mask_ruPortId 0x000f
+    bit_cuPortId 12
+    bit_bandSectorId 8
+    bit_ccId 4
+    bit_ruPortId 0
+  xran_ports 1
+  dpdkBasebandFecMode 0
+  dpdkBasebandDevice (null)
+  filePrefix fhi_72
+  mtu 1500
+  p_o_du_addr [00:11:22:33:44:66, 00:11:22:33:44:66]
+  p_o_ru_addr [10:70:FD:14:1C:10, 10:70:FD:14:1C:10]
+  totalBfWeights 32
+xran_fh_config:
+  dpdk_port 0
+  sector_id 0
+  nCC 1
+  neAxc 2
+  neAxcUl 2
+  nAntElmTRx 2
+  nDLFftSize 0
+  nULFftSize 0
+  nDLRBs 273
+  nULRBs 273
+  nDLAbsFrePointA 0
+  nULAbsFrePointA 0
+  nDLCenterFreqARFCN 630048
+  nULCenterFreqARFCN 630048
+  ttiCb (nil)
+  ttiCbParam (nil)
+  Tadv_cp_dl 125
+  T2a_min_cp_dl 259
+  T2a_max_cp_dl 470
+  T2a_min_cp_ul 125
+  T2a_max_cp_ul 1200
+  T2a_min_up 70
+  T2a_max_up 345
+  Ta3_min 50
+  Ta3_max 171
+  T1a_min_cp_dl 258
+  T1a_max_cp_dl 392
+  T1a_min_cp_ul 285
+  T1a_max_cp_ul 300
+  T1a_min_up 155
+  T1a_max_up 300
+  Ta4_min 0
+  Ta4_max 200
+  enableCP 1
+  prachEnable 1
+  srsEnable 0
+  puschMaskEnable 0
+  puschMaskSlot 0
+  cp_vlan_tag 0
+  up_vlan_tag 0
+  debugStop 0
+  debugStopCount 0
+  DynamicSectionEna 0
+  GPS_Alpha 0
+  GPS_Beta 0
+  prach_config:
+    nPrachConfIdx 151
+    nPrachSubcSpacing 1
+    nPrachZeroCorrConf 0
+    nPrachRestrictSet 0
+EAL: Detected 32 lcore(s)
+EAL: Detected 2 NUMA nodes
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected shared linkage of DPDK
+    nPrachRootSeqIdx432195.363768 [PHY] I Waiting for RUs to be configured ... RC.ru_mask:01
+EAL: Multi-process socket /var/run/dpdk/fhi_72/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available hugepages reported in hugepages-2048kB
+EAL: Probing VFIO support...
+EAL: VFIO support initialized
+EAL:   using IOMMU type 1 (Type 1)
+EAL: Probe PCI driver: net_iavf (8086:1889) device: 0000:ca:01.3 (socket 1)
+iavf_init_rss(): RSS is enabled by PF by default
+ 0
+    nPrachFreqStart 0
+    nPrachFreqOffset -3276
+    nPrachFilterIdx 3
+    startSymId 0
+    lastSymId 0
+    startPrbc 0
+    numPrbc 0
+    timeOffset 0
+    freqOffset 0
+    eAxC_offset 2
+  srs_config:
+    symbMask 0000
+    eAxC_offset 8
+  frame_conf:
+    nFrameDuplexType TDD
+    nNumerology 1
+    nTddPeriod 10
+    sSlotConfig[0]: DDDDDDDDDDDDDD
+    sSlotConfig[1]: DDDDDDDDDDDDDD
+    sSlotConfig[2]: DDDDDDDDDDDDDD
+    sSlotConfig[3]: DDDDDDDDDDDDDD
+    sSlotConfig[4]: DDDDDDDDDDDDDD
+    sSlotConfig[5]: DDDDDDDDDDDDDD
+    sSlotConfig[6]: DDDDDDDDDDDDDD
+    sSlotConfig[7]: DDDDDDGGGGUUUU
+    sSlotConfig[8]: UUUUUUUUUUUUUU
+    sSlotConfig[9]: UUUUUUUUUUUUUU
+  ru_config:
+    xranTech NR
+    xranCat A
+    xranCompHdrType static
+    iqWidth 9
+    compMeth 1
+    iqWidth_PRACH 9
+    compMeth_PRACH 1
+    fftSize 12
+    byteOrder network/BE
+    iqOrder I_Q
+    xran_max_frame 0
+  bbdev_enc (nil)
+  bbdev_dec (nil)
+  tx_cp_eAxC2Vf [not implemented by fhi_lib]
+  tx_up_eAxC2Vf [not implemented by fhi_lib]
+  rx_cp_eAxC2Vf [not implemented by fhi_lib]
+  rx_up_eAxC2Vf [not implemented by fhi_lib]
+  log_level 1
+  max_sections_per_slot 8
+  max_sections_per_symbol 8
+'DPDK 20.11.9'
+ xran_init: MTU 1500
+DPDK 20.11.9 does support eCPRI flows. Set rxq to 1
+PF Eth line speed 10G
+PF Eth lines per O-xU port 1
+RX HW queues per O-xU Eth line 1 
+total cores 32 c_mask 0x0000000000000a800 core 13 [id] system_core 11 [id] pkt_proc_core 0x00000000000008000 [mask] pkt_aux_core 0 [id] timing_core 13 [id]
+xran_ethdi_init_dpdk_io: Calling rte_eal_init:fhi_72 -c 0x0000000000000a800 -n2 --iova-mode=pa --socket-mem=8192 --socket-limit=8192 --proc-type=auto --no-telemetry --file-prefix fhi_72 -a0000:00:00.0   
+wait RUs
+xran_init_mbuf_pool: socket 1
+initializing port 0 for TX, drv=net_iavf
+set DEV_TX_OFFLOAD_MBUF_FAST_FREE
+Port 0 MAC: 00 11 22 33 44 66
+Port 0: nb_rxd 4096 nb_txd 4096
+[0] mp_rx__p_0_q_0 num blocks 65535
+[0] mempool_small__0
+iavf_configure_queues(): request RXDID[22] in Queue[0]
+
+EAL: Probe PCI driver: net_iavf (8086:1889) device: 0000:ca:01.2 (socket 1)
+iavf_init_rss(): RSS is enabled by PF by default
+Checking link status portid [0]   ... done
+Port 0 Link Up - speed 10000 Mbps - full-duplex
+initializing port 1 for TX, drv=net_iavf
+set DEV_TX_OFFLOAD_MBUF_FAST_FREE
+Port 1 MAC: 00 11 22 33 44 66
+Port 1: nb_rxd 4096 nb_txd 4096
+[1] mp_rx__p_1_q_0 num blocks 65535
+[1] mempool_small__1
+iavf_configure_queues(): request RXDID[22] in Queue[0]
+Created ring tx_ring_cp_1 on core 13
+Created ring rx_ring_cp_1_0 on core 13
+
+Checking link status portid [1]  432198.707468 [HW] I [RAU] has loaded ETHERNET trasport protocol.
+432198.707498 [PHY] I RU 0: manually set CPU affinity to CPU 7
+432198.707509 [PHY] I Starting IF interface for RU 0, nb_rx 2
+432198.707523 [PHY] I RU 0 Setting N_TA_offset to 1600 samples (factor 4.000000, UL Freq 3401580, N_RB 273, mu 1)
+432198.707530 [PHY] I Signaling main thread that RU 0 is ready, sl_ahead 10
+432198.707544 [PHY] I RUs configured
+ ... done
+Port 1 Link Up - speed 10000 Mbps - full-duplex
+[ 0] vf  0 local  SRC MAC: 00 11 22 33 44 66
+[ 0] vf  0 remote DST MAC: 10 70 fd 14 1c 10
+[ 0] vf  1 local  SRC MAC: 00 11 22 33 44 66
+[ 0] vf  1 remote DST MAC: 10 70 fd 14 1c 10
+created dl_gen_ring_up_0 on core 13
+ xran_open: 5G NR Category A
+xRAN open PRACH config: Numerology 1 ConfIdx 151, preambleFmrt 10 startsymb 2, numSymbol 12, occassionsInPrachSlot 1
+PRACH: x 2 y[0] 1, y[1] 0 prach slot: 4 .. 9 ..
+PRACH start symbol 2 lastsymbol 13
+xran_init_vfs_mapping: p 0 vf 0
+xran_init_vfs_mapping: p 0 vf 1
+xran_open: interval_us=500, interval_us_local=500
+XRAN_UP_VF: 0x0000
+xran_timing_source_thread [CPU 13] [PID:      1]
+TTI interval 500 [us]
+Start C-plane DL 108 us after TTI  [trigger on sym 4]
+Start C-plane UL 200 us after TTI  [trigger on sym 6]
+Start U-plane DL 300 us before OTA [offset  in sym -8]
+Start U-plane UL 200 us OTA        [offset  in sym 6]
+C-plane to U-plane delay 192 us after TTI
+Start Sym timer 71428 ns
+O-XU      0
+HW        0
+Num cores 2
+Num ports 1
+O-RU Cat  0
+O-RU CC   1
+O-RU eAxC 2
+p:0 XRAN_JOB_TYPE_CP_DL worker id 1
+p:0 XRAN_JOB_TYPE_CP_UL worker id 1
+xran_generic_worker_thread [CPU 15] [PID:      1]
+spawn worker 0 core 15
+xran_open [CPU 11] [PID:      1]
+Waiting on Timing thread...
+xran_sector_get_instances() o_xu_id 0 xran_handle 0x7f9f21671040
+xran_sector_get_instances [0]: CC 0 handle 0x7f9f3413a800
+Handle: 0x7f9f380b5328 Instance: 0x7f9f3413a800
+-> hInstance 0x7f9f3413a800
+ru_0_cc_0_idx_0: [ handle 0x7f9f3413a800 0 0 ] [nPoolIndex 0] nNumberOfBuffers 1024 nBufferSize 14432
+CC:[ handle 0x7f9f3413a800 ru 0 cc_idx 0 ] [nPoolIndex 0] mb pool 0x11c0452b80 
+xran_bm_init() hInstance 0x7f9f3413a800 poolIdx 0 elements 1024 size 14432
+xran_bm_allocate_buffer() hInstance 0x7f9f3413a800 poolIdx 0 count 560
+ru_0_cc_0_idx_1: [ handle 0x7f9f3413a800 0 0 ] [nPoolIndex 1] nNumberOfBuffers 8192 nBufferSize 32
+CC:[ handle 0x7f9f3413a800 ru 0 cc_idx 0 ] [nPoolIndex 1] mb pool 0x11c02cc800 
+xran_bm_init() hInstance 0x7f9f3413a800 poolIdx 1 elements 8192 size 32
+ru_0_cc_0_idx_2: [ handle 0x7f9f3413a800 0 0 ] [nPoolIndex 2] nNumberOfBuffers 1024 nBufferSize 9872
+CC:[ handle 0x7f9f3413a800 ru 0 cc_idx 0 ] [nPoolIndex 2] mb pool 0x11c012a480 
+xran_bm_init() hInstance 0x7f9f3413a800 poolIdx 2 elements 1024 size 9872
+xran_bm_allocate_buffer() hInstance 0x7f9f3413a800 poolIdx 2 count 40
+xran_bm_allocate_buffer() hInstance 0x7f9f3413a800 poolIdx 1 count 560
+ru_0_cc_0_idx_3: [ handle 0x7f9f3413a800 0 0 ] [nPoolIndex 3] nNumberOfBuffers 1024 nBufferSize 13168
+CC:[ handle 0x7f9f3413a800 ru 0 cc_idx 0 ] [nPoolIndex 3] mb pool 0x121ad37740 
+xran_bm_init() hInstance 0x7f9f3413a800 poolIdx 3 elements 1024 size 13168
+xran_bm_allocate_buffer() hInstance 0x7f9f3413a800 poolIdx 3 count 560
+ru_0_cc_0_idx_4: [ handle 0x7f9f3413a800 0 0 ] [nPoolIndex 4] nNumberOfBuffers 8192 nBufferSize 32
+CC:[ handle 0x7f9f3413a800 ru 0 cc_idx 0 ] [nPoolIndex 4] mb pool 0x1219e41f80 
+xran_bm_init() hInstance 0x7f9f3413a800 poolIdx 4 elements 8192 size 32
+ru_0_cc_0_idx_5: [ handle 0x7f9f3413a800 0 0 ] [nPoolIndex 5] nNumberOfBuffers 1024 nBufferSize 9872
+CC:[ handle 0x7f9f3413a800 ru 0 cc_idx 0 ] [nPoolIndex 5] mb pool 0x121983fb40 
+xran_bm_init() hInstance 0x7f9f3413a800 poolIdx 5 elements 1024 size 9872
+xran_bm_allocate_buffer() hInstance 0x7f9f3413a800 poolIdx 5 count 40
+xran_bm_allocate_buffer() hInstance 0x7f9f3413a800 poolIdx 4 count 560
+ru_0_cc_0_idx_6: [ handle 0x7f9f3413a800 0 0 ] [nPoolIndex 6] nNumberOfBuffers 1024 nBufferSize 3360
+CC:[ handle 0x7f9f3413a800 ru 0 cc_idx 0 ] [nPoolIndex 6] mb pool 0x1218c8b080 
+xran_bm_init() hInstance 0x7f9f3413a800 poolIdx 6 elements 1024 size 3360
+xran_bm_allocate_buffer() hInstance 0x7f9f3413a800 poolIdx 6 count 560
+ORAN: get_internal_parameter
+ORAN: get_internal_parameter
+ORAN: trx_oran_start
+O-DU: XRAN start time: 12/19/25 08:31:02.800126819 UTC [500]
+Start ORAN. Done
+setup_RU_buffers: frame_parms = 0x7f9f480bb010
+waiting for sync (ru_thread,-1/0x563fa04800a8,0x563fa0d3a0a0,0x563fa0d3a060)
+RC.ru_mask:00
+ALL RUs READY!
+RC.nb_RU:1
+ALL RUs ready - ini432198.707561 [PHY] I init_eNB_afterRU() RC.nb_nr_inst:1
+432198.707590 [PHY] I RC.nb_nr_CC[inst:0]:0x7f9f4bbde010
+432198.707606 [PHY] I [gNB 0] phy_init_nr_gNB() About to wait for gNB to be configured
+432198.897527 [PHY] I Initialise nr transport
+432199.435307 [PHY] I Mapping RX ports from 1 RUs to gNB 0
+432199.435324 [PHY] I gNB->num_RU:1
+432199.435326 [PHY] I Attaching RU 0 antenna 0 to gNB antenna 0
+432199.435327 [PHY] I Attaching RU 0 antenna 1 to gNB antenna 1
+432199.435337 [UTIL] I threadCreate() for Tpool0_-1: creating thread with affinity ffffffff, priority 97
+432199.437580 [UTIL] I threadCreate() for Tpool1_-1: creating thread with affinity ffffffff, priority 97
+432199.439806 [UTIL] I threadCreate() for Tpool2_-1: creating thread with affinity ffffffff, priority 97
+432199.441980 [UTIL] I threadCreate() for Tpool3_-1: creating thread with affinity ffffffff, priority 97
+432199.444142 [UTIL] I threadCreate() for Tpool4_-1: creating thread with affinity ffffffff, priority 97
+432199.446311 [UTIL] I threadCreate() for Tpool5_-1: creating thread with affinity ffffffff, priority 97
+432199.448481 [UTIL] I threadCreate() for Tpool6_-1: creating thread with affinity ffffffff, priority 97
+432199.450674 [UTIL] I threadCreate() for Tpool7_-1: creating thread with affinity ffffffff, priority 97
+432199.452848 [UTIL] I threadCreate() for L1_rx_thread: creating thread with affinity 3, priority 97
+432199.454992 [UTIL] I threadCreate() for L1_tx_thread: creating thread with affinity 5, priority 97
+432199.488154 [UTIL] I threadCreate() for L1_stats: creating thread with affinity ffffffff, priority 1
+t gNBs
+Not NFAPI mode - call init_eNB_afterRU()
+shlib_path libdfts.so
+[LOADER] library libdfts.so successfully loaded
+shlib_path libldpc.so
+[LOADER] library libldpc.so successfully loaded
+shlib_path libldpc.so
+[LOADER] library libldpc.so has been loaded previously, reloading function pointers
+[LOADER] library libldpc.so successfully loaded
+O-DU: thread_run start time: 12/19/25 08:31:03.000000007 UTC [500]
+waiting for sync (L1_stats_thread,-1/0x563fa04800a8,0x563fa0d3a0a0,0x563fa0d3a060)
+ALL RUs ready - ALL gNBs ready
+Sending sync to all threads
+got sync (L1_stats_thread)
+got sync (ru_thread)
+432199.490392 [PHY] I RU 0 no rf device
+432199.490395 [PHY] I RU 0 RF started opp_enabled 0
+432207.192612 [NR_PHY] I first_rx is set (num_ports 1)
+432207.193195 [PHY] I before adjusting, OAI: frame=0 slot=0, XRAN: frame=0 slot=9
+432207.193201 [PHY] I After adjusting, OAI: frame=0 slot=9, XRAN: frame=0 slot=9
+432208.463621 [NR_MAC] I Frame.Slot 128.0
+
+432208.468617 [NR_PHY] I [o-du 0][rx  202752 pps  202752 kbps 1150782][tx   63326 pps   63326 kbps 1840812][Total Msgs_Rcvd 202752]
+432208.468625 [NR_PHY] I [o_du0][pusch0   98304 prach0    3072]
+432208.468627 [NR_PHY] I [o_du0][pusch1   98304 prach1    3072]
+432209.743622 [NR_MAC] I Frame.Slot 256.0
+
+432209.748616 [NR_PHY] I [o-du 0][rx  405504 pps  202752 kbps 1598668][tx  126558 pps   63232 kbps 2555318][Total Msgs_Rcvd 405504]
+432209.748623 [NR_PHY] I [o_du0][pusch0  196608 prach0    6144]
+432209.748625 [NR_PHY] I [o_du0][pusch1  196608 prach1    6144]
+432211.023616 [NR_MAC] I Frame.Slot 384.0
+
+432211.028610 [NR_PHY] I [o-du 0][rx  608256 pps  202752 kbps 1598664][tx  189790 pps   63232 kbps 2555318][Total Msgs_Rcvd 608256]
+432211.028618 [NR_PHY] I [o_du0][pusch0  294912 prach0    9216]
+432211.028619 [NR_PHY] I [o_du0][pusch1  294912 prach1    9216]
+432212.303620 [NR_MAC] I Frame.Slot 512.0
+
+432212.308612 [NR_PHY] I [o-du 0][rx  811008 pps  202752 kbps 1598673][tx  253022 pps   63232 kbps 2555318][Total Msgs_Rcvd 811008]
+432212.308620 [NR_PHY] I [o_du0][pusch0  393216 prach0   12288]
+432212.308621 [NR_PHY] I [o_du0][pusch1  393216 prach1   12288]
+432213.583622 [NR_MAC] I Frame.Slot 640.0
+
+432213.588614 [NR_PHY] I [o-du 0][rx 1013760 pps  202752 kbps 1598668][tx  316254 pps   63232 kbps 2555318][Total Msgs_Rcvd 1013760]
+432213.588622 [NR_PHY] I [o_du0][pusch0  491520 prach0   15360]
+432213.588623 [NR_PHY] I [o_du0][pusch1  491520 prach1   15360]
+432214.863623 [NR_MAC] I Frame.Slot 768.0
+
+432214.868618 [NR_PHY] I [o-du 0][rx 1216512 pps  202752 kbps 1598652][tx  379486 pps   63232 kbps 2555318][Total Msgs_Rcvd 1216512]
+432214.868625 [NR_PHY] I [o_du0][pusch0  589824 prach0   18432]
+432214.868626 [NR_PHY] I [o_du0][pusch1  589824 prach1   18432]
+432216.143618 [NR_MAC] I Frame.Slot 896.0
+
+432216.148610 [NR_PHY] I [o-du 0][rx 1419264 pps  202752 kbps 1598668][tx  442718 pps   63232 kbps 2555318][Total Msgs_Rcvd 1419264]
+432216.148618 [NR_PHY] I [o_du0][pusch0  688128 prach0   21504]
+432216.148619 [NR_PHY] I [o_du0][pusch1  688128 prach1   21504]
+432217.423621 [NR_MAC] I Frame.Slot 0.0
+
+432217.428613 [NR_PHY] I [o-du 0][rx 1622016 pps  202752 kbps 1598668][tx  505950 pps   63232 kbps 2555318][Total Msgs_Rcvd 1622016]
+432217.428620 [NR_PHY] I [o_du0][pusch0  786432 prach0   24576]
+432217.428622 [NR_PHY] I [o_du0][pusch1  786432 prach1   24576]
+432218.703622 [NR_MAC] I Frame.Slot 128.0
+
+432218.708616 [NR_PHY] I [o-du 0][rx 1824768 pps  202752 kbps 1598668][tx  569182 pps   63232 kbps 2555318][Total Msgs_Rcvd 1824768]
+432218.708624 [NR_PHY] I [o_du0][pusch0  884736 prach0   27648]
+432218.708625 [NR_PHY] I [o_du0][pusch1  884736 prach1   27648]
+432219.983619 [NR_MAC] I Frame.Slot 256.0
+
+432219.988610 [NR_PHY] I [o-du 0][rx 2027520 pps  202752 kbps 1598668][tx  632414 pps   63232 kbps 2555318][Total Msgs_Rcvd 2027520]
+432219.988617 [NR_PHY] I [o_du0][pusch0  983040 prach0   30720]
+432219.988619 [NR_PHY] I [o_du0][pusch1  983040 prach1   30720]
+432221.263620 [NR_MAC] I Frame.Slot 384.0
+
+432221.268613 [NR_PHY] I [o-du 0][rx 2230272 pps  202752 kbps 1598668][tx  695646 pps   63232 kbps 2555318][Total Msgs_Rcvd 2230272]
+432221.268621 [NR_PHY] I [o_du0][pusch0 1081344 prach0   33792]
+432221.268622 [NR_PHY] I [o_du0][pusch1 1081344 prach1   33792]
+432222.543621 [NR_MAC] I Frame.Slot 512.0
+
+432222.548615 [NR_PHY] I [o-du 0][rx 2433024 pps  202752 kbps 1598668][tx  758878 pps   63232 kbps 2555318][Total Msgs_Rcvd 2433024]
+432222.548624 [NR_PHY] I [o_du0][pusch0 1179648 prach0   36864]
+432222.548625 [NR_PHY] I [o_du0][pusch1 1179648 prach1   36864]
+432223.823623 [NR_MAC] I Frame.Slot 640.0
+
+432223.828618 [NR_PHY] I [o-du 0][rx 2635776 pps  202752 kbps 1598668][tx  822110 pps   63232 kbps 2555318][Total Msgs_Rcvd 2635776]
+432223.828625 [NR_PHY] I [o_du0][pusch0 1277952 prach0   39936]
+432223.828626 [NR_PHY] I [o_du0][pusch1 1277952 prach1   39936]
+432225.103619 [NR_MAC] I Frame.Slot 768.0
+
+432225.108610 [NR_PHY] I [o-du 0][rx 2838528 pps  202752 kbps 1598668][tx  885342 pps   63232 kbps 2555318][Total Msgs_Rcvd 2838528]
+432225.108618 [NR_PHY] I [o_du0][pusch0 1376256 prach0   43008]
+432225.108619 [NR_PHY] I [o_du0][pusch1 1376256 prach1   43008]
+432226.383621 [NR_MAC] I Frame.Slot 896.0
+
+432226.388613 [NR_PHY] I [o-du 0][rx 3041280 pps  202752 kbps 1598668][tx  948574 pps   63232 kbps 2555318][Total Msgs_Rcvd 3041280]
+432226.388620 [NR_PHY] I [o_du0][pusch0 1474560 prach0   46080]
+432226.388621 [NR_PHY] I [o_du0][pusch1 1474560 prach1   46080]
+432227.663621 [NR_MAC] I Frame.Slot 0.0
+
+432227.668616 [NR_PHY] I [o-du 0][rx 3244032 pps  202752 kbps 1598668][tx 1011806 pps   63232 kbps 2555318][Total Msgs_Rcvd 3244032]
+432227.668624 [NR_PHY] I [o_du0][pusch0 1572864 prach0   49152]
+432227.668625 [NR_PHY] I [o_du0][pusch1 1572864 prach1   49152]
+432228.943617 [NR_MAC] I Frame.Slot 128.0
+
+432228.948610 [NR_PHY] I [o-du 0][rx 3446784 pps  202752 kbps 1598668][tx 1075038 pps   63232 kbps 2555318][Total Msgs_Rcvd 3446784]
+432228.948618 [NR_PHY] I [o_du0][pusch0 1671168 prach0   52224]
+432228.948619 [NR_PHY] I [o_du0][pusch1 1671168 prach1   52224]
+432230.223618 [NR_MAC] I Frame.Slot 256.0
+
+432230.228612 [NR_PHY] I [o-du 0][rx 3649536 pps  202752 kbps 1598668][tx 1138270 pps   63232 kbps 2555318][Total Msgs_Rcvd 3649536]
+432230.228620 [NR_PHY] I [o_du0][pusch0 1769472 prach0   55296]
+432230.228622 [NR_PHY] I [o_du0][pusch1 1769472 prach1   55296]
+432231.503620 [NR_MAC] I Frame.Slot 384.0
+
+432231.508614 [NR_PHY] I [o-du 0][rx 3852288 pps  202752 kbps 1598664][tx 1201502 pps   63232 kbps 2555318][Total Msgs_Rcvd 3852288]
+432231.508622 [NR_PHY] I [o_du0][pusch0 1867776 prach0   58368]
+432231.508623 [NR_PHY] I [o_du0][pusch1 1867776 prach1   58368]
+432232.783623 [NR_MAC] I Frame.Slot 512.0
+
+432232.788617 [NR_PHY] I [o-du 0][rx 4055040 pps  202752 kbps 1598673][tx 1264734 pps   63232 kbps 2555318][Total Msgs_Rcvd 4055040]
+432232.788623 [NR_PHY] I [o_du0][pusch0 1966080 prach0   61440]
+432232.788624 [NR_PHY] I [o_du0][pusch1 1966080 prach1   61440]
+432234.063617 [NR_MAC] I Frame.Slot 640.0
+
+432234.068611 [NR_PHY] I [o-du 0][rx 4257792 pps  202752 kbps 1598685][tx 1327966 pps   63232 kbps 2555318][Total Msgs_Rcvd 4257792]
+432234.068618 [NR_PHY] I [o_du0][pusch0 2064384 prach0   64512]
+432234.068619 [NR_PHY] I [o_du0][pusch1 2064384 prach1   64512]
+432235.343620 [NR_MAC] I Frame.Slot 768.0
+
+432235.348612 [NR_PHY] I [o-du 0][rx 4460544 pps  202752 kbps 1598668][tx 1391198 pps   63232 kbps 2555318][Total Msgs_Rcvd 4460544]
+432235.348618 [NR_PHY] I [o_du0][pusch0 2162688 prach0   67584]
+432235.348619 [NR_PHY] I [o_du0][pusch1 2162688 prach1   67584]
+432236.623622 [NR_MAC] I Frame.Slot 896.0
+
+432236.628616 [NR_PHY] I [o-du 0][rx 4663296 pps  202752 kbps 1598668][tx 1454430 pps   63232 kbps 2555318][Total Msgs_Rcvd 4663296]
+432236.628622 [NR_PHY] I [o_du0][pusch0 2260992 prach0   70656]
+432236.628630 [NR_PHY] I [o_du0][pusch1 2260992 prach1   70656]
+432237.903624 [NR_MAC] I Frame.Slot 0.0
+
+432237.908609 [NR_PHY] I [o-du 0][rx 4866048 pps  202752 kbps 1598668][tx 1517662 pps   63232 kbps 2555318][Total Msgs_Rcvd 4866048]
+432237.908616 [NR_PHY] I [o_du0][pusch0 2359296 prach0   73728]
+432237.908623 [NR_PHY] I [o_du0][pusch1 2359296 prach1   73728]
+432239.183618 [NR_MAC] I Frame.Slot 128.0
+
+432239.188612 [NR_PHY] I [o-du 0][rx 5068800 pps  202752 kbps 1598668][tx 1580894 pps   63232 kbps 2555318][Total Msgs_Rcvd 5068800]
+432239.188618 [NR_PHY] I [o_du0][pusch0 2457600 prach0   76800]
+432239.188619 [NR_PHY] I [o_du0][pusch1 2457600 prach1   76800]
+432240.463620 [NR_MAC] I Frame.Slot 256.0
+
+432240.468615 [NR_PHY] I [o-du 0][rx 5271552 pps  202752 kbps 1598668][tx 1644126 pps   63232 kbps 2555318][Total Msgs_Rcvd 5271552]
+432240.468621 [NR_PHY] I [o_du0][pusch0 2555904 prach0   79872]
+432240.468622 [NR_PHY] I [o_du0][pusch1 2555904 prach1   79872]
+432241.743624 [NR_MAC] I Frame.Slot 384.0
+
+432241.748617 [NR_PHY] I [o-du 0][rx 5474304 pps  202752 kbps 1598668][tx 1707358 pps   63232 kbps 2555318][Total Msgs_Rcvd 5474304]
+432241.748625 [NR_PHY] I [o_du0][pusch0 2654208 prach0   82944]
+432241.748626 [NR_PHY] I [o_du0][pusch1 2654208 prach1   82944]
+432243.023617 [NR_MAC] I Frame.Slot 512.0
+
+432243.028611 [NR_PHY] I [o-du 0][rx 5677056 pps  202752 kbps 1598673][tx 1770590 pps   63232 kbps 2555318][Total Msgs_Rcvd 5677056]
+432243.028619 [NR_PHY] I [o_du0][pusch0 2752512 prach0   86016]
+432243.028620 [NR_PHY] I [o_du0][pusch1 2752512 prach1   86016]
+432244.303619 [NR_MAC] I Frame.Slot 640.0
+
+432244.308614 [NR_PHY] I [o-du 0][rx 5879808 pps  202752 kbps 1598668][tx 1833822 pps   63232 kbps 2555318][Total Msgs_Rcvd 5879808]
+432244.308620 [NR_PHY] I [o_du0][pusch0 2850816 prach0   89088]
+432244.308621 [NR_PHY] I [o_du0][pusch1 2850816 prach1   89088]
+432245.583621 [NR_MAC] I Frame.Slot 768.0
+
+432245.588617 [NR_PHY] I [o-du 0][rx 6082560 pps  202752 kbps 1598668][tx 1897054 pps   63232 kbps 2555318][Total Msgs_Rcvd 6082560]
+432245.588624 [NR_PHY] I [o_du0][pusch0 2949120 prach0   92160]
+432245.588625 [NR_PHY] I [o_du0][pusch1 2949120 prach1   92160]
+432246.863624 [NR_MAC] I Frame.Slot 896.0
+
+432246.868617 [NR_PHY] I [o-du 0][rx 6285312 pps  202752 kbps 1598668][tx 1960286 pps   63232 kbps 2555318][Total Msgs_Rcvd 6285312]
+432246.868624 [NR_PHY] I [o_du0][pusch0 3047424 prach0   95232]
+432246.868625 [NR_PHY] I [o_du0][pusch1 3047424 prach1   95232]
+432248.143618 [NR_MAC] I Frame.Slot 0.0
+
+432248.148612 [NR_PHY] I [o-du 0][rx 6488064 pps  202752 kbps 1598668][tx 2023518 pps   63232 kbps 2555318][Total Msgs_Rcvd 6488064]
+432248.148618 [NR_PHY] I [o_du0][pusch0 3145728 prach0   98304]
+432248.148620 [NR_PHY] I [o_du0][pusch1 3145728 prach1   98304]
+432249.423620 [NR_MAC] I Frame.Slot 128.0
+
+432249.428614 [NR_PHY] I [o-du 0][rx 6690816 pps  202752 kbps 1598668][tx 2086750 pps   63232 kbps 2555318][Total Msgs_Rcvd 6690816]
+432249.428621 [NR_PHY] I [o_du0][pusch0 3244032 prach0  101376]
+432249.428622 [NR_PHY] I [o_du0][pusch1 3244032 prach1  101376]
+432250.703622 [NR_MAC] I Frame.Slot 256.0
+
+432250.708617 [NR_PHY] I [o-du 0][rx 6893568 pps  202752 kbps 1598668][tx 2149982 pps   63232 kbps 2555318][Total Msgs_Rcvd 6893568]
+432250.708624 [NR_PHY] I [o_du0][pusch0 3342336 prach0  104448]
+432250.708625 [NR_PHY] I [o_du0][pusch1 3342336 prach1  104448]
+432251.983617 [NR_MAC] I Frame.Slot 384.0
+
+432251.988610 [NR_PHY] I [o-du 0][rx 7096320 pps  202752 kbps 1598668][tx 2213214 pps   63232 kbps 2555318][Total Msgs_Rcvd 7096320]
+432251.988616 [NR_PHY] I [o_du0][pusch0 3440640 prach0  107520]
+432251.988618 [NR_PHY] I [o_du0][pusch1 3440640 prach1  107520]
+432253.263619 [NR_MAC] I Frame.Slot 512.0
+
+432253.268613 [NR_PHY] I [o-du 0][rx 7299072 pps  202752 kbps 1598652][tx 2276446 pps   63232 kbps 2555318][Total Msgs_Rcvd 7299072]
+432253.268619 [NR_PHY] I [o_du0][pusch0 3538944 prach0  110592]
+432253.268620 [NR_PHY] I [o_du0][pusch1 3538944 prach1  110592]
+432254.543621 [NR_MAC] I Frame.Slot 640.0
+
+432254.548615 [NR_PHY] I [o-du 0][rx 7501824 pps  202752 kbps 1598685][tx 2339678 pps   63232 kbps 2555318][Total Msgs_Rcvd 7501824]
+432254.548623 [NR_PHY] I [o_du0][pusch0 3637248 prach0  113664]
+432254.548624 [NR_PHY] I [o_du0][pusch1 3637248 prach1  113664]
+432255.823624 [NR_MAC] I Frame.Slot 768.0
+
+432255.828617 [NR_PHY] I [o-du 0][rx 7704576 pps  202752 kbps 1598668][tx 2402910 pps   63232 kbps 2555318][Total Msgs_Rcvd 7704576]
+432255.828624 [NR_PHY] I [o_du0][pusch0 3735552 prach0  116736]
+432255.828625 [NR_PHY] I [o_du0][pusch1 3735552 prach1  116736]
+432257.103618 [NR_MAC] I Frame.Slot 896.0
+
+432257.108612 [NR_PHY] I [o-du 0][rx 7907328 pps  202752 kbps 1598635][tx 2466142 pps   63232 kbps 2555318][Total Msgs_Rcvd 7907328]
+432257.108618 [NR_PHY] I [o_du0][pusch0 3833856 prach0  119808]
+432257.108619 [NR_PHY] I [o_du0][pusch1 3833856 prach1  119808]
+432258.383619 [NR_MAC] I Frame.Slot 0.0
+
+432258.388614 [NR_PHY] I [o-du 0][rx 8110080 pps  202752 kbps 1598702][tx 2529374 pps   63232 kbps 2555318][Total Msgs_Rcvd 8110080]
+432258.388621 [NR_PHY] I [o_du0][pusch0 3932160 prach0  122880]
+432258.388622 [NR_PHY] I [o_du0][pusch1 3932160 prach1  122880]
+432259.663622 [NR_MAC] I Frame.Slot 128.0
+
+432259.668616 [NR_PHY] I [o-du 0][rx 8312832 pps  202752 kbps 1598668][tx 2592606 pps   63232 kbps 2555318][Total Msgs_Rcvd 8312832]
+432259.668623 [NR_PHY] I [o_du0][pusch0 4030464 prach0  125952]
+432259.668624 [NR_PHY] I [o_du0][pusch1 4030464 prach1  125952]
+432260.943616 [NR_MAC] I Frame.Slot 256.0
+
+432260.948610 [NR_PHY] I [o-du 0][rx 8515584 pps  202752 kbps 1598668][tx 2655838 pps   63232 kbps 2555318][Total Msgs_Rcvd 8515584]
+432260.948617 [NR_PHY] I [o_du0][pusch0 4128768 prach0  129024]
+432260.948618 [NR_PHY] I [o_du0][pusch1 4128768 prach1  129024]
+432262.223619 [NR_MAC] I Frame.Slot 384.0
+
+432262.228612 [NR_PHY] I [o-du 0][rx 8718336 pps  202752 kbps 1598668][tx 2719070 pps   63232 kbps 2555318][Total Msgs_Rcvd 8718336]
+432262.228620 [NR_PHY] I [o_du0][pusch0 4227072 prach0  132096]
+432262.228621 [NR_PHY] I [o_du0][pusch1 4227072 prach1  132096]
+432263.503621 [NR_MAC] I Frame.Slot 512.0
+
+432263.508615 [NR_PHY] I [o-du 0][rx 8921088 pps  202752 kbps 1598668][tx 2782302 pps   63232 kbps 2555318][Total Msgs_Rcvd 8921088]
+432263.508622 [NR_PHY] I [o_du0][pusch0 4325376 prach0  135168]
+432263.508633 [NR_PHY] I [o_du0][pusch1 4325376 prach1  135168]
+432264.783622 [NR_MAC] I Frame.Slot 640.0
+
+432264.788616 [NR_PHY] I [o-du 0][rx 9123840 pps  202752 kbps 1598668][tx 2845534 pps   63232 kbps 2555318][Total Msgs_Rcvd 9123840]
+432264.788623 [NR_PHY] I [o_du0][pusch0 4423680 prach0  138240]
+432264.788624 [NR_PHY] I [o_du0][pusch1 4423680 prach1  138240]
+432266.063617 [NR_MAC] I Frame.Slot 768.0
+
+432266.068610 [NR_PHY] I [o-du 0][rx 9326592 pps  202752 kbps 1598690][tx 2908766 pps   63232 kbps 2555318][Total Msgs_Rcvd 9326592]
+432266.068617 [NR_PHY] I [o_du0][pusch0 4521984 prach0  141312]
+432266.068619 [NR_PHY] I [o_du0][pusch1 4521984 prach1  141312]
+432267.343619 [NR_MAC] I Frame.Slot 896.0
+
+432267.348613 [NR_PHY] I [o-du 0][rx 9529344 pps  202752 kbps 1598668][tx 2971998 pps   63232 kbps 2555318][Total Msgs_Rcvd 9529344]
+432267.348621 [NR_PHY] I [o_du0][pusch0 4620288 prach0  144384]
+432267.348622 [NR_PHY] I [o_du0][pusch1 4620288 prach1  144384]
+432268.623621 [NR_MAC] I Frame.Slot 0.0
+
+432268.628616 [NR_PHY] I [o-du 0][rx 9732096 pps  202752 kbps 1598668][tx 3035230 pps   63232 kbps 2555318][Total Msgs_Rcvd 9732096]
+432268.628623 [NR_PHY] I [o_du0][pusch0 4718592 prach0  147456]
+432268.628624 [NR_PHY] I [o_du0][pusch1 4718592 prach1  147456]
+432269.903625 [NR_MAC] I Frame.Slot 128.0
+
+432269.908610 [NR_PHY] I [o-du 0][rx 9934848 pps  202752 kbps 1598635][tx 3098462 pps   63232 kbps 2555318][Total Msgs_Rcvd 9934848]
+432269.908617 [NR_PHY] I [o_du0][pusch0 4816896 prach0  150528]
+432269.908618 [NR_PHY] I [o_du0][pusch1 4816896 prach1  150528]
+432271.183618 [NR_MAC] I Frame.Slot 256.0
+
+432271.188611 [NR_PHY] I [o-du 0][rx 10137600 pps  202752 kbps 1598702][tx 3161694 pps   63232 kbps 2555318][Total Msgs_Rcvd 10137600]
+432271.188619 [NR_PHY] I [o_du0][pusch0 4915200 prach0  153600]
+432271.188620 [NR_PHY] I [o_du0][pusch1 4915200 prach1  153600]
+432272.463621 [NR_MAC] I Frame.Slot 384.0
+
+432272.468614 [NR_PHY] I [o-du 0][rx 10340352 pps  202752 kbps 1598668][tx 3224926 pps   63232 kbps 2555318][Total Msgs_Rcvd 10340352]
+432272.468622 [NR_PHY] I [o_du0][pusch0 5013504 prach0  156672]
+432272.468623 [NR_PHY] I [o_du0][pusch1 5013504 prach1  156672]
+432273.743622 [NR_MAC] I Frame.Slot 512.0
+
+432273.748617 [NR_PHY] I [o-du 0][rx 10543104 pps  202752 kbps 1598647][tx 3288158 pps   63232 kbps 2555318][Total Msgs_Rcvd 10543104]
+432273.748625 [NR_PHY] I [o_du0][pusch0 5111808 prach0  159744]
+432273.748626 [NR_PHY] I [o_du0][pusch1 5111808 prach1  159744]
+432275.023618 [NR_MAC] I Frame.Slot 640.0
+
+432275.028611 [NR_PHY] I [o-du 0][rx 10745856 pps  202752 kbps 1598702][tx 3351390 pps   63232 kbps 2555318][Total Msgs_Rcvd 10745856]
+432275.028618 [NR_PHY] I [o_du0][pusch0 5210112 prach0  162816]
+432275.028619 [NR_PHY] I [o_du0][pusch1 5210112 prach1  162816]
+432276.303619 [NR_MAC] I Frame.Slot 768.0
+
+432276.308612 [NR_PHY] I [o-du 0][rx 10948608 pps  202752 kbps 1598668][tx 3414622 pps   63232 kbps 2555318][Total Msgs_Rcvd 10948608]
+432276.308619 [NR_PHY] I [o_du0][pusch0 5308416 prach0  165888]
+432276.308620 [NR_PHY] I [o_du0][pusch1 5308416 prach1  165888]
+432277.583622 [NR_MAC] I Frame.Slot 896.0
+
+432277.588615 [NR_PHY] I [o-du 0][rx 11151360 pps  202752 kbps 1598668][tx 3477854 pps   63232 kbps 2555318][Total Msgs_Rcvd 11151360]
+432277.588622 [NR_PHY] I [o_du0][pusch0 5406720 prach0  168960]
+432277.588623 [NR_PHY] I [o_du0][pusch1 5406720 prach1  168960]
+432278.863623 [NR_MAC] I Frame.Slot 0.0
+
+432278.868617 [NR_PHY] I [o-du 0][rx 11354112 pps  202752 kbps 1598668][tx 3541086 pps   63232 kbps 2555318][Total Msgs_Rcvd 11354112]
+432278.868625 [NR_PHY] I [o_du0][pusch0 5505024 prach0  172032]
+432278.868626 [NR_PHY] I [o_du0][pusch1 5505024 prach1  172032]
+432280.143616 [NR_MAC] I Frame.Slot 128.0
+
+432280.148612 [NR_PHY] I [o-du 0][rx 11556864 pps  202752 kbps 1598668][tx 3604318 pps   63232 kbps 2555318][Total Msgs_Rcvd 11556864]
+432280.148618 [NR_PHY] I [o_du0][pusch0 5603328 prach0  175104]
+432280.148620 [NR_PHY] I [o_du0][pusch1 5603328 prach1  175104]
+432281.423620 [NR_MAC] I Frame.Slot 256.0
+
+432281.428613 [NR_PHY] I [o-du 0][rx 11759616 pps  202752 kbps 1598668][tx 3667550 pps   63232 kbps 2555318][Total Msgs_Rcvd 11759616]
+432281.428620 [NR_PHY] I [o_du0][pusch0 5701632 prach0  178176]
+432281.428621 [NR_PHY] I [o_du0][pusch1 5701632 prach1  178176]
+432282.703623 [NR_MAC] I Frame.Slot 384.0
+
+432282.708616 [NR_PHY] I [o-du 0][rx 11962368 pps  202752 kbps 1598668][tx 3730782 pps   63232 kbps 2555318][Total Msgs_Rcvd 11962368]
+432282.708625 [NR_PHY] I [o_du0][pusch0 5799936 prach0  181248]
+432282.708626 [NR_PHY] I [o_du0][pusch1 5799936 prach1  181248]
+432283.983617 [NR_MAC] I Frame.Slot 512.0
+
+432283.988611 [NR_PHY] I [o-du 0][rx 12165120 pps  202752 kbps 1598668][tx 3794014 pps   63232 kbps 2555318][Total Msgs_Rcvd 12165120]
+432283.988618 [NR_PHY] I [o_du0][pusch0 5898240 prach0  184320]
+432283.988619 [NR_PHY] I [o_du0][pusch1 5898240 prach1  184320]
+432285.263619 [NR_MAC] I Frame.Slot 640.0
+
+432285.268612 [NR_PHY] I [o-du 0][rx 12367872 pps  202752 kbps 1598668][tx 3857246 pps   63232 kbps 2555318][Total Msgs_Rcvd 12367872]
+432285.268619 [NR_PHY] I [o_du0][pusch0 5996544 prach0  187392]
+432285.268621 [NR_PHY] I [o_du0][pusch1 5996544 prach1  187392]
+432286.543621 [NR_MAC] I Frame.Slot 768.0
+
+432286.548615 [NR_PHY] I [o-du 0][rx 12570624 pps  202752 kbps 1598668][tx 3920478 pps   63232 kbps 2555318][Total Msgs_Rcvd 12570624]
+432286.548622 [NR_PHY] I [o_du0][pusch0 6094848 prach0  190464]
+432286.548623 [NR_PHY] I [o_du0][pusch1 6094848 prach1  190464]
+432287.823624 [NR_MAC] I Frame.Slot 896.0
+
+432287.828618 [NR_PHY] I [o-du 0][rx 12773376 pps  202752 kbps 1598668][tx 3983710 pps   63232 kbps 2555318][Total Msgs_Rcvd 12773376]
+432287.828625 [NR_PHY] I [o_du0][pusch0 6193152 prach0  193536]
+432287.828626 [NR_PHY] I [o_du0][pusch1 6193152 prach1  193536]
+432289.103617 [NR_MAC] I Frame.Slot 0.0
+
+432289.108612 [NR_PHY] I [o-du 0][rx 12976128 pps  202752 kbps 1598668][tx 4046942 pps   63232 kbps 2555318][Total Msgs_Rcvd 12976128]
+432289.108620 [NR_PHY] I [o_du0][pusch0 6291456 prach0  196608]
+432289.108621 [NR_PHY] I [o_du0][pusch1 6291456 prach1  196608]
+432290.383620 [NR_MAC] I Frame.Slot 128.0
+
+432290.388614 [NR_PHY] I [o-du 0][rx 13178880 pps  202752 kbps 1598668][tx 4110174 pps   63232 kbps 2555318][Total Msgs_Rcvd 13178880]
+432290.388622 [NR_PHY] I [o_du0][pusch0 6389760 prach0  199680]
+432290.388623 [NR_PHY] I [o_du0][pusch1 6389760 prach1  199680]
+432291.663622 [NR_MAC] I Frame.Slot 256.0
+
+432291.668617 [NR_PHY] I [o-du 0][rx 13381632 pps  202752 kbps 1598668][tx 4173406 pps   63232 kbps 2555318][Total Msgs_Rcvd 13381632]
+432291.668624 [NR_PHY] I [o_du0][pusch0 6488064 prach0  202752]
+432291.668625 [NR_PHY] I [o_du0][pusch1 6488064 prach1  202752]
+432292.943616 [NR_MAC] I Frame.Slot 384.0
+
+432292.948610 [NR_PHY] I [o-du 0][rx 13584384 pps  202752 kbps 1598668][tx 4236638 pps   63232 kbps 2555318][Total Msgs_Rcvd 13584384]
+432292.948617 [NR_PHY] I [o_du0][pusch0 6586368 prach0  205824]
+432292.948618 [NR_PHY] I [o_du0][pusch1 6586368 prach1  205824]
+432294.223619 [NR_MAC] I Frame.Slot 512.0
+
+432294.228612 [NR_PHY] I [o-du 0][rx 13787136 pps  202752 kbps 1598668][tx 4299870 pps   63232 kbps 2555318][Total Msgs_Rcvd 13787136]
+432294.228620 [NR_PHY] I [o_du0][pusch0 6684672 prach0  208896]
+432294.228621 [NR_PHY] I [o_du0][pusch1 6684672 prach1  208896]
+432295.503620 [NR_MAC] I Frame.Slot 640.0
+
+432295.508615 [NR_PHY] I [o-du 0][rx 13989888 pps  202752 kbps 1598668][tx 4363102 pps   63232 kbps 2555318][Total Msgs_Rcvd 13989888]
+432295.508622 [NR_PHY] I [o_du0][pusch0 6782976 prach0  211968]
+432295.508623 [NR_PHY] I [o_du0][pusch1 6782976 prach1  211968]
+432296.783623 [NR_MAC] I Frame.Slot 768.0
+
+432296.788618 [NR_PHY] I [o-du 0][rx 14192640 pps  202752 kbps 1598668][tx 4426334 pps   63232 kbps 2555318][Total Msgs_Rcvd 14192640]
+432296.788626 [NR_PHY] I [o_du0][pusch0 6881280 prach0  215040]
+432296.788628 [NR_PHY] I [o_du0][pusch1 6881280 prach1  215040]
+432298.063617 [NR_MAC] I Frame.Slot 896.0
+
+432298.068610 [NR_PHY] I [o-du 0][rx 14395392 pps  202752 kbps 1598702][tx 4489566 pps   63232 kbps 2555318][Total Msgs_Rcvd 14395392]
+432298.068618 [NR_PHY] I [o_du0][pusch0 6979584 prach0  218112]
+432298.068619 [NR_PHY] I [o_du0][pusch1 6979584 prach1  218112]
+432299.343620 [NR_MAC] I Frame.Slot 0.0
+
+432299.348613 [NR_PHY] I [o-du 0][rx 14598144 pps  202752 kbps 1598652][tx 4552798 pps   63232 kbps 2555318][Total Msgs_Rcvd 14598144]
+432299.348621 [NR_PHY] I [o_du0][pusch0 7077888 prach0  221184]
+432299.348622 [NR_PHY] I [o_du0][pusch1 7077888 prach1  221184]
+432300.623622 [NR_MAC] I Frame.Slot 128.0
+
+432300.628617 [NR_PHY] I [o-du 0][rx 14800896 pps  202752 kbps 1598668][tx 4616030 pps   63232 kbps 2555318][Total Msgs_Rcvd 14800896]
+432300.628624 [NR_PHY] I [o_du0][pusch0 7176192 prach0  224256]
+432300.628625 [NR_PHY] I [o_du0][pusch1 7176192 prach1  224256]
+432301.903624 [NR_MAC] I Frame.Slot 256.0
+
+432301.908610 [NR_PHY] I [o-du 0][rx 15003648 pps  202752 kbps 1598668][tx 4679262 pps   63232 kbps 2555318][Total Msgs_Rcvd 15003648]
+432301.908618 [NR_PHY] I [o_du0][pusch0 7274496 prach0  227328]
+432301.908620 [NR_PHY] I [o_du0][pusch1 7274496 prach1  227328]
+432303.183618 [NR_MAC] I Frame.Slot 384.0
+
+432303.188611 [NR_PHY] I [o-du 0][rx 15206400 pps  202752 kbps 1598668][tx 4742494 pps   63232 kbps 2555318][Total Msgs_Rcvd 15206400]
+432303.188619 [NR_PHY] I [o_du0][pusch0 7372800 prach0  230400]
+432303.188620 [NR_PHY] I [o_du0][pusch1 7372800 prach1  230400]
+432304.463619 [NR_MAC] I Frame.Slot 512.0
+
+432304.468614 [NR_PHY] I [o-du 0][rx 15409152 pps  202752 kbps 1598668][tx 4805726 pps   63232 kbps 2555318][Total Msgs_Rcvd 15409152]
+432304.468621 [NR_PHY] I [o_du0][pusch0 7471104 prach0  233472]
+432304.468623 [NR_PHY] I [o_du0][pusch1 7471104 prach1  233472]
+432305.743623 [NR_MAC] I Frame.Slot 640.0
+
+432305.748618 [NR_PHY] I [o-du 0][rx 15611904 pps  202752 kbps 1598664][tx 4868958 pps   63232 kbps 2555318][Total Msgs_Rcvd 15611904]
+432305.748626 [NR_PHY] I [o_du0][pusch0 7569408 prach0  236544]
+432305.748627 [NR_PHY] I [o_du0][pusch1 7569408 prach1  236544]
+432307.023618 [NR_MAC] I Frame.Slot 768.0
+
+432307.028612 [NR_PHY] I [o-du 0][rx 15814656 pps  202752 kbps 1598668][tx 4932190 pps   63232 kbps 2555318][Total Msgs_Rcvd 15814656]
+432307.028620 [NR_PHY] I [o_du0][pusch0 7667712 prach0  239616]
+432307.028621 [NR_PHY] I [o_du0][pusch1 7667712 prach1  239616]
+432308.303620 [NR_MAC] I Frame.Slot 896.0
+
+432308.308613 [NR_PHY] I [o-du 0][rx 16017408 pps  202752 kbps 1598668][tx 4995422 pps   63232 kbps 2555318][Total Msgs_Rcvd 16017408]
+432308.308620 [NR_PHY] I [o_du0][pusch0 7766016 prach0  242688]
+432308.308621 [NR_PHY] I [o_du0][pusch1 7766016 prach1  242688]
+432309.583622 [NR_MAC] I Frame.Slot 0.0
+
+432309.588615 [NR_PHY] I [o-du 0][rx 16220160 pps  202752 kbps 1598668][tx 5058654 pps   63232 kbps 2555318][Total Msgs_Rcvd 16220160]
+432309.588625 [NR_PHY] I [o_du0][pusch0 7864320 prach0  245760]
+432309.588626 [NR_PHY] I [o_du0][pusch1 7864320 prach1  245760]
+432310.863623 [NR_MAC] I Frame.Slot 128.0
+
+432310.868617 [NR_PHY] I [o-du 0][rx 16422912 pps  202752 kbps 1598668][tx 5121886 pps   63232 kbps 2555318][Total Msgs_Rcvd 16422912]
+432310.868624 [NR_PHY] I [o_du0][pusch0 7962624 prach0  248832]
+432310.868625 [NR_PHY] I [o_du0][pusch1 7962624 prach1  248832]
+432312.143619 [NR_MAC] I Frame.Slot 256.0
+
+432312.148612 [NR_PHY] I [o-du 0][rx 16625664 pps  202752 kbps 1598668][tx 5185118 pps   63232 kbps 2555318][Total Msgs_Rcvd 16625664]
+432312.148619 [NR_PHY] I [o_du0][pusch0 8060928 prach0  251904]
+432312.148620 [NR_PHY] I [o_du0][pusch1 8060928 prach1  251904]
+432313.423621 [NR_MAC] I Frame.Slot 384.0
+
+432313.428615 [NR_PHY] I [o-du 0][rx 16828416 pps  202752 kbps 1598652][tx 5248350 pps   63232 kbps 2555318][Total Msgs_Rcvd 16828416]
+432313.428622 [NR_PHY] I [o_du0][pusch0 8159232 prach0  254976]
+432313.428624 [NR_PHY] I [o_du0][pusch1 8159232 prach1  254976]
+432314.703623 [NR_MAC] I Frame.Slot 512.0
+
+432314.708617 [NR_PHY] I [o-du 0][rx 17031168 pps  202752 kbps 1598685][tx 5311582 pps   63232 kbps 2555318][Total Msgs_Rcvd 17031168]
+432314.708624 [NR_PHY] I [o_du0][pusch0 8257536 prach0  258048]
+432314.708625 [NR_PHY] I [o_du0][pusch1 8257536 prach1  258048]
+432315.983616 [NR_MAC] I Frame.Slot 640.0
+
+432315.988609 [NR_PHY] I [o-du 0][rx 17233920 pps  202752 kbps 1598668][tx 5374814 pps   63232 kbps 2555318][Total Msgs_Rcvd 17233920]
+432315.988617 [NR_PHY] I [o_du0][pusch0 8355840 prach0  261120]
+432315.988618 [NR_PHY] I [o_du0][pusch1 8355840 prach1  261120]
+432317.263620 [NR_MAC] I Frame.Slot 768.0
+
+432317.268612 [NR_PHY] I [o-du 0][rx 17436672 pps  202752 kbps 1598668][tx 5438046 pps   63232 kbps 2555318][Total Msgs_Rcvd 17436672]
+432317.268620 [NR_PHY] I [o_du0][pusch0 8454144 prach0  264192]
+432317.268621 [NR_PHY] I [o_du0][pusch1 8454144 prach1  264192]
+432318.543621 [NR_MAC] I Frame.Slot 896.0
+
+432318.548615 [NR_PHY] I [o-du 0][rx 17639424 pps  202752 kbps 1598635][tx 5501278 pps   63232 kbps 2555318][Total Msgs_Rcvd 17639424]
+432318.548622 [NR_PHY] I [o_du0][pusch0 8552448 prach0  267264]
+432318.548623 [NR_PHY] I [o_du0][pusch1 8552448 prach1  267264]
+432319.823624 [NR_MAC] I Frame.Slot 0.0
+
+432319.828618 [NR_PHY] I [o-du 0][rx 17842176 pps  202752 kbps 1598702][tx 5564510 pps   63232 kbps 2555318][Total Msgs_Rcvd 17842176]
+432319.828625 [NR_PHY] I [o_du0][pusch0 8650752 prach0  270336]
+432319.828627 [NR_PHY] I [o_du0][pusch1 8650752 prach1  270336]
+432321.103616 [NR_MAC] I Frame.Slot 128.0
+
+432321.108612 [NR_PHY] I [o-du 0][rx 18044928 pps  202752 kbps 1598635][tx 5627742 pps   63232 kbps 2555318][Total Msgs_Rcvd 18044928]
+432321.108619 [NR_PHY] I [o_du0][pusch0 8749056 prach0  273408]
+432321.108620 [NR_PHY] I [o_du0][pusch1 8749056 prach1  273408]
+432322.383620 [NR_MAC] I Frame.Slot 256.0
+
+432322.388613 [NR_PHY] I [o-du 0][rx 18247680 pps  202752 kbps 1598702][tx 5690974 pps   63232 kbps 2555318][Total Msgs_Rcvd 18247680]
+432322.388620 [NR_PHY] I [o_du0][pusch0 8847360 prach0  276480]
+432322.388622 [NR_PHY] I [o_du0][pusch1 8847360 prach1  276480]
+432323.663622 [NR_MAC] I Frame.Slot 384.0
+
+432323.668616 [NR_PHY] I [o-du 0][rx 18450432 pps  202752 kbps 1598668][tx 5754206 pps   63232 kbps 2555318][Total Msgs_Rcvd 18450432]
+432323.668622 [NR_PHY] I [o_du0][pusch0 8945664 prach0  279552]
+432323.668623 [NR_PHY] I [o_du0][pusch1 8945664 prach1  279552]
+432324.943616 [NR_MAC] I Frame.Slot 512.0
+
+432324.948610 [NR_PHY] I [o-du 0][rx 18653184 pps  202752 kbps 1598664][tx 5817438 pps   63232 kbps 2555318][Total Msgs_Rcvd 18653184]
+432324.948617 [NR_PHY] I [o_du0][pusch0 9043968 prach0  282624]
+432324.948618 [NR_PHY] I [o_du0][pusch1 9043968 prach1  282624]
+432326.223619 [NR_MAC] I Frame.Slot 640.0
+
+432326.228612 [NR_PHY] I [o-du 0][rx 18855936 pps  202752 kbps 1598656][tx 5880670 pps   63232 kbps 2555318][Total Msgs_Rcvd 18855936]
+432326.228620 [NR_PHY] I [o_du0][pusch0 9142272 prach0  285696]
+432326.228621 [NR_PHY] I [o_du0][pusch1 9142272 prach1  285696]
+432327.503621 [NR_MAC] I Frame.Slot 768.0
+
+432327.508614 [NR_PHY] I [o-du 0][rx 19058688 pps  202752 kbps 1598685][tx 5943902 pps   63232 kbps 2555318][Total Msgs_Rcvd 19058688]
+432327.508621 [NR_PHY] I [o_du0][pusch0 9240576 prach0  288768]
+432327.508633 [NR_PHY] I [o_du0][pusch1 9240576 prach1  288768]
+432328.783622 [NR_MAC] I Frame.Slot 896.0
+
+432328.788616 [NR_PHY] I [o-du 0][rx 19261440 pps  202752 kbps 1598664][tx 6007134 pps   63232 kbps 2555318][Total Msgs_Rcvd 19261440]
+432328.788624 [NR_PHY] I [o_du0][pusch0 9338880 prach0  291840]
+432328.788625 [NR_PHY] I [o_du0][pusch1 9338880 prach1  291840]
+432330.063618 [NR_MAC] I Frame.Slot 0.0
+
+432330.068611 [NR_PHY] I [o-du 0][rx 19464192 pps  202752 kbps 1598668][tx 6070366 pps   63232 kbps 2555318][Total Msgs_Rcvd 19464192]
+432330.068619 [NR_PHY] I [o_du0][pusch0 9437184 prach0  294912]
+432330.068620 [NR_PHY] I [o_du0][pusch1 9437184 prach1  294912]
+432331.343619 [NR_MAC] I Frame.Slot 128.0
+
+432331.348613 [NR_PHY] I [o-du 0][rx 19666944 pps  202752 kbps 1598668][tx 6133598 pps   63232 kbps 2555318][Total Msgs_Rcvd 19666944]
+432331.348621 [NR_PHY] I [o_du0][pusch0 9535488 prach0  297984]
+432331.348632 [NR_PHY] I [o_du0][pusch1 9535488 prach1  297984]
+432332.623622 [NR_MAC] I Frame.Slot 256.0
+
+432332.628616 [NR_PHY] I [o-du 0][rx 19869696 pps  202752 kbps 1598668][tx 6196830 pps   63232 kbps 2555318][Total Msgs_Rcvd 19869696]
+432332.628622 [NR_PHY] I [o_du0][pusch0 9633792 prach0  301056]
+432332.628624 [NR_PHY] I [o_du0][pusch1 9633792 prach1  301056]
+432333.903624 [NR_MAC] I Frame.Slot 384.0
+
+432333.908610 [NR_PHY] I [o-du 0][rx 20072448 pps  202752 kbps 1598635][tx 6260062 pps   63232 kbps 2555318][Total Msgs_Rcvd 20072448]
+432333.908617 [NR_PHY] I [o_du0][pusch0 9732096 prach0  304128]
+432333.908618 [NR_PHY] I [o_du0][pusch1 9732096 prach1  304128]
+432335.183618 [NR_MAC] I Frame.Slot 512.0
+
+432335.188611 [NR_PHY] I [o-du 0][rx 20275200 pps  202752 kbps 1598702][tx 6323294 pps   63232 kbps 2555318][Total Msgs_Rcvd 20275200]
+432335.188619 [NR_PHY] I [o_du0][pusch0 9830400 prach0  307200]
+432335.188620 [NR_PHY] I [o_du0][pusch1 9830400 prach1  307200]
+432336.463621 [NR_MAC] I Frame.Slot 640.0
+
+432336.468615 [NR_PHY] I [o-du 0][rx 20477952 pps  202752 kbps 1598668][tx 6386526 pps   63232 kbps 2555318][Total Msgs_Rcvd 20477952]
+432336.468622 [NR_PHY] I [o_du0][pusch0 9928704 prach0  310272]
+432336.468623 [NR_PHY] I [o_du0][pusch1 9928704 prach1  310272]
+432337.743623 [NR_MAC] I Frame.Slot 768.0
+
+432337.748618 [NR_PHY] I [o-du 0][rx 20680704 pps  202752 kbps 1598668][tx 6449758 pps   63232 kbps 2555318][Total Msgs_Rcvd 20680704]
+432337.748626 [NR_PHY] I [o_du0][pusch0 10027008 prach0  313344]
+432337.748627 [NR_PHY] I [o_du0][pusch1 10027008 prach1  313344]
+432339.023617 [NR_MAC] I Frame.Slot 896.0
+
+432339.028610 [NR_PHY] I [o-du 0][rx 20883456 pps  202752 kbps 1598668][tx 6512990 pps   63232 kbps 2555318][Total Msgs_Rcvd 20883456]
+432339.028617 [NR_PHY] I [o_du0][pusch0 10125312 prach0  316416]
+432339.028619 [NR_PHY] I [o_du0][pusch1 10125312 prach1  316416]
+432340.303619 [NR_MAC] I Frame.Slot 0.0
+
+432340.308613 [NR_PHY] I [o-du 0][rx 21086208 pps  202752 kbps 1598668][tx 6576222 pps   63232 kbps 2555318][Total Msgs_Rcvd 21086208]
+432340.308620 [NR_PHY] I [o_du0][pusch0 10223616 prach0  319488]
+432340.308621 [NR_PHY] I [o_du0][pusch1 10223616 prach1  319488]
+432341.583622 [NR_MAC] I Frame.Slot 128.0
+
+432341.588616 [NR_PHY] I [o-du 0][rx 21288960 pps  202752 kbps 1598668][tx 6639454 pps   63232 kbps 2555318][Total Msgs_Rcvd 21288960]
+432341.588623 [NR_PHY] I [o_du0][pusch0 10321920 prach0  322560]
+432341.588624 [NR_PHY] I [o_du0][pusch1 10321920 prach1  322560]
+432342.863624 [NR_MAC] I Frame.Slot 256.0
+
+432342.868618 [NR_PHY] I [o-du 0][rx 21491712 pps  202752 kbps 1598668][tx 6702686 pps   63232 kbps 2555318][Total Msgs_Rcvd 21491712]
+432342.868625 [NR_PHY] I [o_du0][pusch0 10420224 prach0  325632]
+432342.868627 [NR_PHY] I [o_du0][pusch1 10420224 prach1  325632]
+432344.143619 [NR_MAC] I Frame.Slot 384.0
+
+432344.148612 [NR_PHY] I [o-du 0][rx 21694464 pps  202752 kbps 1598668][tx 6765918 pps   63232 kbps 2555318][Total Msgs_Rcvd 21694464]
+432344.148619 [NR_PHY] I [o_du0][pusch0 10518528 prach0  328704]
+432344.148620 [NR_PHY] I [o_du0][pusch1 10518528 prach1  328704]
+432345.423620 [NR_MAC] I Frame.Slot 512.0
+
+432345.428614 [NR_PHY] I [o-du 0][rx 21897216 pps  202752 kbps 1598664][tx 6829150 pps   63232 kbps 2555318][Total Msgs_Rcvd 21897216]
+432345.428622 [NR_PHY] I [o_du0][pusch0 10616832 prach0  331776]
+432345.428623 [NR_PHY] I [o_du0][pusch1 10616832 prach1  331776]
+432346.703624 [NR_MAC] I Frame.Slot 640.0
+
+432346.708616 [NR_PHY] I [o-du 0][rx 22099968 pps  202752 kbps 1598673][tx 6892382 pps   63232 kbps 2555318][Total Msgs_Rcvd 22099968]
+432346.708623 [NR_PHY] I [o_du0][pusch0 10715136 prach0  334848]
+432346.708624 [NR_PHY] I [o_du0][pusch1 10715136 prach1  334848]
+432347.983617 [NR_MAC] I Frame.Slot 768.0
+
+432347.988609 [NR_PHY] I [o-du 0][rx 22302720 pps  202752 kbps 1598668][tx 6955614 pps   63232 kbps 2555318][Total Msgs_Rcvd 22302720]
+432347.988615 [NR_PHY] I [o_du0][pusch0 10813440 prach0  337920]
+432347.988616 [NR_PHY] I [o_du0][pusch1 10813440 prach1  337920]
+432349.263620 [NR_MAC] I Frame.Slot 896.0
+
+432349.268612 [NR_PHY] I [o-du 0][rx 22505472 pps  202752 kbps 1598668][tx 7018846 pps   63232 kbps 2555318][Total Msgs_Rcvd 22505472]
+432349.268620 [NR_PHY] I [o_du0][pusch0 10911744 prach0  340992]
+432349.268621 [NR_PHY] I [o_du0][pusch1 10911744 prach1  340992]
+432350.543620 [NR_MAC] I Frame.Slot 0.0
+
+432350.548615 [NR_PHY] I [o-du 0][rx 22708224 pps  202752 kbps 1598668][tx 7082078 pps   63232 kbps 2555318][Total Msgs_Rcvd 22708224]
+432350.548622 [NR_PHY] I [o_du0][pusch0 11010048 prach0  344064]
+432350.548623 [NR_PHY] I [o_du0][pusch1 11010048 prach1  344064]
+432351.823623 [NR_MAC] I Frame.Slot 128.0
+
+432351.828617 [NR_PHY] I [o-du 0][rx 22910976 pps  202752 kbps 1598668][tx 7145310 pps   63232 kbps 2555318][Total Msgs_Rcvd 22910976]
+432351.828625 [NR_PHY] I [o_du0][pusch0 11108352 prach0  347136]
+432351.828626 [NR_PHY] I [o_du0][pusch1 11108352 prach1  347136]
+432353.103619 [NR_MAC] I Frame.Slot 256.0
+
+432353.108611 [NR_PHY] I [o-du 0][rx 23113728 pps  202752 kbps 1598668][tx 7208542 pps   63232 kbps 2555318][Total Msgs_Rcvd 23113728]
+432353.108618 [NR_PHY] I [o_du0][pusch0 11206656 prach0  350208]
+432353.108619 [NR_PHY] I [o_du0][pusch1 11206656 prach1  350208]
+432354.383620 [NR_MAC] I Frame.Slot 384.0
+
+432354.388614 [NR_PHY] I [o-du 0][rx 23316480 pps  202752 kbps 3197354][tx 7271774 pps   63232 kbps 2555318][Total Msgs_Rcvd 23316480]
+432354.388622 [NR_PHY] I [o_du0][pusch0 11304960 prach0  353280]
+432354.388623 [NR_PHY] I [o_du0][pusch1 11304960 prach1  353280]
+432355.663623 [NR_MAC] I Frame.Slot 512.0
+
+432355.668615 [NR_PHY] I [o-du 0][rx 23519232 pps  202752 kbps 1598668][tx 7335006 pps   63232 kbps 2555318][Total Msgs_Rcvd 23519232]
+432355.668622 [NR_PHY] I [o_du0][pusch0 11403264 prach0  356352]
+432355.668624 [NR_PHY] I [o_du0][pusch1 11403264 prach1  356352]
+432356.943616 [NR_MAC] I Frame.Slot 640.0
+
+432356.948611 [NR_PHY] I [o-du 0][rx 23721984 pps  202752 kbps 1598652][tx 7398238 pps   63232 kbps 2555318][Total Msgs_Rcvd 23721984]
+432356.948618 [NR_PHY] I [o_du0][pusch0 11501568 prach0  359424]
+432356.948619 [NR_PHY] I [o_du0][pusch1 11501568 prach1  359424]
+432358.223618 [NR_MAC] I Frame.Slot 768.0
+
+432358.228613 [NR_PHY] I [o-du 0][rx 23924736 pps  202752 kbps 1598685][tx 7461470 pps   63232 kbps 2555318][Total Msgs_Rcvd 23924736]
+432358.228621 [NR_PHY] I [o_du0][pusch0 11599872 prach0  362496]
+432358.228622 [NR_PHY] I [o_du0][pusch1 11599872 prach1  362496]
+432359.503620 [NR_MAC] I Frame.Slot 896.0
+
+432359.508615 [NR_PHY] I [o-du 0][rx 24127488 pps  202752 kbps 1598668][tx 7524702 pps   63232 kbps 2555318][Total Msgs_Rcvd 24127488]
+432359.508622 [NR_PHY] I [o_du0][pusch0 11698176 prach0  365568]
+432359.508624 [NR_PHY] I [o_du0][pusch1 11698176 prach1  365568]
+432360.783623 [NR_MAC] I Frame.Slot 0.0
+
+432360.788616 [NR_PHY] I [o-du 0][rx 24330240 pps  202752 kbps 1598668][tx 7587934 pps   63232 kbps 2555318][Total Msgs_Rcvd 24330240]
+432360.788624 [NR_PHY] I [o_du0][pusch0 11796480 prach0  368640]
+432360.788625 [NR_PHY] I [o_du0][pusch1 11796480 prach1  368640]
+432362.063618 [NR_MAC] I Frame.Slot 128.0
+
+432362.068611 [NR_PHY] I [o-du 0][rx 24532992 pps  202752 kbps 1598668][tx 7651166 pps   63232 kbps 2555318][Total Msgs_Rcvd 24532992]
+432362.068619 [NR_PHY] I [o_du0][pusch0 11894784 prach0  371712]
+432362.068620 [NR_PHY] I [o_du0][pusch1 11894784 prach1  371712]
+432363.343619 [NR_MAC] I Frame.Slot 256.0
+
+432363.348614 [NR_PHY] I [o-du 0][rx 24735744 pps  202752 kbps 1598668][tx 7714398 pps   63232 kbps 2555318][Total Msgs_Rcvd 24735744]
+432363.348621 [NR_PHY] I [o_du0][pusch0 11993088 prach0  374784]
+432363.348622 [NR_PHY] I [o_du0][pusch1 11993088 prach1  374784]
+432364.623623 [NR_MAC] I Frame.Slot 384.0
+
+432364.628615 [NR_PHY] I [o-du 0][rx 24938496 pps  202752 kbps 1598668][tx 7777630 pps   63232 kbps 2555318][Total Msgs_Rcvd 24938496]
+432364.628623 [NR_PHY] I [o_du0][pusch0 12091392 prach0  377856]
+432364.628624 [NR_PHY] I [o_du0][pusch1 12091392 prach1  377856]
+432365.903623 [NR_MAC] I Frame.Slot 512.0
+
+432365.908610 [NR_PHY] I [o-du 0][rx 25141248 pps  202752 kbps 1598668][tx 7840862 pps   63232 kbps 2555318][Total Msgs_Rcvd 25141248]
+432365.908617 [NR_PHY] I [o_du0][pusch0 12189696 prach0  380928]
+432365.908618 [NR_PHY] I [o_du0][pusch1 12189696 prach1  380928]
+432367.183618 [NR_MAC] I Frame.Slot 640.0
+
+432367.188613 [NR_PHY] I [o-du 0][rx 25344000 pps  202752 kbps 1598668][tx 7904094 pps   63232 kbps 2555318][Total Msgs_Rcvd 25344000]
+432367.188620 [NR_PHY] I [o_du0][pusch0 12288000 prach0  384000]
+432367.188621 [NR_PHY] I [o_du0][pusch1 12288000 prach1  384000]
+432368.463619 [NR_MAC] I Frame.Slot 768.0
+
+432368.468614 [NR_PHY] I [o-du 0][rx 25546752 pps  202752 kbps 1598668][tx 7967326 pps   63232 kbps 2555318][Total Msgs_Rcvd 25546752]
+432368.468622 [NR_PHY] I [o_du0][pusch0 12386304 prach0  387072]
+432368.468623 [NR_PHY] I [o_du0][pusch1 12386304 prach1  387072]
+432369.743621 [NR_MAC] I Frame.Slot 896.0
+
+432369.748617 [NR_PHY] I [o-du 0][rx 25749504 pps  202752 kbps 1598659][tx 8030558 pps   63232 kbps 2555318][Total Msgs_Rcvd 25749504]
+432369.748624 [NR_PHY] I [o_du0][pusch0 12484608 prach0  390144]
+432369.748626 [NR_PHY] I [o_du0][pusch1 12484608 prach1  390144]
+432371.023617 [NR_MAC] I Frame.Slot 0.0
+
+432371.028611 [NR_PHY] I [o-du 0][rx 25952256 pps  202752 kbps 1598668][tx 8093790 pps   63232 kbps 2555318][Total Msgs_Rcvd 25952256]
+432371.028619 [NR_PHY] I [o_du0][pusch0 12582912 prach0  393216]
+432371.028620 [NR_PHY] I [o_du0][pusch1 12582912 prach1  393216]
+432372.303619 [NR_MAC] I Frame.Slot 128.0
+
+432372.308612 [NR_PHY] I [o-du 0][rx 26155008 pps  202752 kbps 1598668][tx 8157022 pps   63232 kbps 2555318][Total Msgs_Rcvd 26155008]
+432372.308619 [NR_PHY] I [o_du0][pusch0 12681216 prach0  396288]
+432372.308620 [NR_PHY] I [o_du0][pusch1 12681216 prach1  396288]
+432373.583620 [NR_MAC] I Frame.Slot 256.0
+
+432373.588615 [NR_PHY] I [o-du 0][rx 26357760 pps  202752 kbps 1598668][tx 8220254 pps   63232 kbps 2555318][Total Msgs_Rcvd 26357760]
+432373.588623 [NR_PHY] I [o_du0][pusch0 12779520 prach0  399360]
+432373.588624 [NR_PHY] I [o_du0][pusch1 12779520 prach1  399360]
+432374.863624 [NR_MAC] I Frame.Slot 384.0
+
+432374.868618 [NR_PHY] I [o-du 0][rx 26560512 pps  202752 kbps 1598668][tx 8283486 pps   63232 kbps 2555318][Total Msgs_Rcvd 26560512]
+432374.868625 [NR_PHY] I [o_du0][pusch0 12877824 prach0  402432]
+432374.868636 [NR_PHY] I [o_du0][pusch1 12877824 prach1  402432]
+432376.143618 [NR_MAC] I Frame.Slot 512.0
+
+432376.148612 [NR_PHY] I [o-du 0][rx 26763264 pps  202752 kbps 1598668][tx 8346718 pps   63232 kbps 2555318][Total Msgs_Rcvd 26763264]
+432376.148619 [NR_PHY] I [o_du0][pusch0 12976128 prach0  405504]
+432376.148620 [NR_PHY] I [o_du0][pusch1 12976128 prach1  405504]
+432377.423620 [NR_MAC] I Frame.Slot 640.0
+
+432377.428613 [NR_PHY] I [o-du 0][rx 26966016 pps  202752 kbps 1598668][tx 8409950 pps   63232 kbps 2555318][Total Msgs_Rcvd 26966016]
+432377.428622 [NR_PHY] I [o_du0][pusch0 13074432 prach0  408576]
+432377.428623 [NR_PHY] I [o_du0][pusch1 13074432 prach1  408576]
+432378.703621 [NR_MAC] I Frame.Slot 768.0
+
+432378.708615 [NR_PHY] I [o-du 0][rx 27168768 pps  202752 kbps 1598668][tx 8473182 pps   63232 kbps 2555318][Total Msgs_Rcvd 27168768]
+432378.708622 [NR_PHY] I [o_du0][pusch0 13172736 prach0  411648]
+432378.708623 [NR_PHY] I [o_du0][pusch1 13172736 prach1  411648]
+432379.983616 [NR_MAC] I Frame.Slot 896.0
+
+432379.988610 [NR_PHY] I [o-du 0][rx 27371520 pps  202752 kbps 1598668][tx 8536414 pps   63232 kbps 2555318][Total Msgs_Rcvd 27371520]
+432379.988617 [NR_PHY] I [o_du0][pusch0 13271040 prach0  414720]
+432379.988618 [NR_PHY] I [o_du0][pusch1 13271040 prach1  414720]
