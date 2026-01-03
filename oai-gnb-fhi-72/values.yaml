@@ -10,14 +10,12 @@ nfapi:
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:   # image name either locally present or in a public/private repository
   # BMW Branch
-  repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
-  version: rhel9
+  # repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb-fhi72
+  # version: rhel9
 
   # Develop Branch
-  # repository: oaisoftwarealliance/oai-gnb-fhi72
-  # version: 2025.w30
-
-
+  repository: oaisoftwarealliance/oai-gnb-fhi72
+  version: 2025.w30
   pullPolicy: IfNotPresent
 
 # good to use when pulling images from docker-hub mention
@@ -83,18 +81,8 @@ multus:
 # in templates/configmap.yaml
 # Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF
 config:
-  # Pegatron frequency configuration
-  absoluteFrequencySSB: 649920  # 3748.8 MHz
-  dl_absoluteFrequencyPointA: 646724  # 3700.86 MHz
-  # OAI
-  #absoluteFrequencySSB: 623328
-  #dl_absoluteFrequencyPointA: 620052
-  # Claude
-  #absoluteFrequencySSB: 641280
-  #dl_absoluteFrequencyPointA: 638004
-  timeZone: "Europe/Paris"
-  #useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
-  useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
+  timeZone: "Asia/Taipei"
+  useAdditionalOptions: "--log_config.global_log_options level,nocolor,time"
   gnbName: "oai-gnb-00"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
@@ -104,10 +92,34 @@ config:
   #LiteON
   ruCPlaneMacAdd: 00:e0:0c:00:ae:06
   ruUPlaneMacAdd: 00:e0:0c:00:ae:06
-  #amfhost: "open5gs-amf-ngap.5gs-cn"
   amfhost: "192.168.8.108" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
+
+fhi72:
+  dpdk_iova_mode: "VA"
+  file_prefix: "fhi_72"
+  fh_config:
+    timings:
+      T1a_cp_dl:
+        min: 285
+        max: 470
+      T1a_cp_ul:
+        min: 285
+        max: 429
+      T1a_up:
+        min: 125
+        max: 350
+      Ta4:
+        min: 110
+        max: 180
+    ru_config:
+      iq_width: 9
+      iq_width_prach: 9
+    prach_config:
+      eAxC_offset: 4
+      kbar: 4
+    file_prefix: "fhi_72"
 
 ## Debugging section
 start:
@@ -144,8 +156,7 @@ resources:
   define: true
   limits:
     nf:
-      #cpu: 8
-      windriver.com/isolcpus: 8
+      wr_isolcpus: 14
       memory: 16Gi
       hugepages: 10Gi
       sriovCplaneClaim:
@@ -159,8 +170,7 @@ resources:
       memory: 128Mi
   requests:
     nf:
-      #cpu: 8
-      windriver.com/isolcpus: 8
+      wr_isolcpus: 14
       memory: 16Gi
       hugepages: 10Gi
       sriovCplaneClaim:
@@ -172,7 +182,6 @@ resources:
     tcpdump:
       cpu: 100m
       memory: 128Mi
-
 
 tolerations: []
 affinity: {}
