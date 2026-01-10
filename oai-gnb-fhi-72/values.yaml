@@ -18,6 +18,11 @@ nfimage:   # image name either locally present or in a public/private repository
 #imagePullSecrets:
 # - name: "regcred"
 
+metadata:
+  annotations:
+    cpu-load-balancing.crio.io: "disable"
+    cpu-quota.crio.io: "disable"
+    irq-load-balancing.crio.io: "disable"
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -69,24 +74,15 @@ multus:
     vlan: 6 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
-    sriovNetworkNamespace: sriov-network-operator
-    sriovResourceNameCplane: fh_sriov_cp
-    sriovResourceNameUplane: fh_sriov_up
+    sriovNetworkNamespace: openshift-sriov-network-operator
+    sriovResourceNameCplane: du_fh
+    sriovResourceNameUplane: du_fh
 
 ## If you want to change more configuration parameters then you should mount the config file
 # in templates/configmap.yaml
 # Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF
 config:
-  # Summer
-  absoluteFrequencySSB: 630048
-  dl_absoluteFrequencyPointA: 626772
-  # OAI
-  #absoluteFrequencySSB: 623328
-  #dl_absoluteFrequencyPointA: 620052
-  # Claude
-  #absoluteFrequencySSB: 641280
-  #dl_absoluteFrequencyPointA: 638004
-  timeZone: "Europe/Paris"
+  timeZone: "Asia/Taipei"
   #useAdditionalOptions: "--sa --log_config.global_log_options level,nocolor,time"
   useAdditionalOptions: " --log_config.global_log_options level,nocolor,time" # Develop Branch
   gnbName: "oai-gnb-00"
@@ -97,13 +93,31 @@ config:
   #LiteON
   ruCPlaneMacAdd: 00:aa:ff:bb:ff:cc #liteon 00:aa:ff:bb:ff:cc
   ruUPlaneMacAdd: 00:aa:ff:bb:ff:cc #liteon 00:aa:ff:bb:ff:cc
-
-  #amfhost: "oai-amf.oai-cn"  # amf ip-address or service-name oai-amf-svc or 172.21.6.94
-  #amfhost: "10.0.6.246"  # Open5GS Kubernetes
   #amfhost: "open5gs-amf-ngap.5gs-cn"
   amfhost: "192.168.8.108" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
+
+fhi72:
+  dpdk_iova_mode: "VA"
+  file_prefix: "fhi_72"
+  T1a_cp_dl:
+    min: 285
+    max: 429
+  T1a_cp_ul:
+    min: 285
+    max: 429
+  T1a_up:
+    min: 96
+    max: 196
+  Ta4:
+    min: 110
+    max: 180
+  ru_config:
+    iq_width: 9
+    iq_width_prach: 9
+  prach_config:
+    kbar: 0
 
 ## Debugging section
 start:
@@ -141,34 +155,29 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 20
+      cpu: 14
       memory: 16Gi
-      # size of the hugepages is 1 Gi
       hugepages: 10Gi
-        #hugepages: 10Gi
       sriovCplaneClaim:
-        name: openshift.io/fh_sriov_cp
-        quantity: 1
+        name: openshift.io/du_fh
+        quantity: 2
       sriovUplaneClaim:
-        name: openshift.io/fh_sriov_up
-        quantity: 1
-    #If tcpdump container is disabled this value will not be used
+        name: openshift.io/du_fh
+        quantity: 2
     tcpdump:
       cpu: 100m
       memory: 128Mi
   requests:
     nf:
-      cpu: 20
+      cpu: 14
       memory: 16Gi
-      # size of the hugepages is 1 Gi
       hugepages: 10Gi
       sriovCplaneClaim:
-        name: openshift.io/fh_sriov_cp
-        quantity: 1
+        name: openshift.io/du_fh
+        quantity: 2
       sriovUplaneClaim:
-        name: openshift.io/fh_sriov_up
-        quantity: 1
-    #If tcpdump container is disabled this value will not be used
+        name: openshift.io/du_fh
+        quantity: 2
     tcpdump:
       cpu: 100m
       memory: 128Mi
@@ -179,7 +188,7 @@ affinity: {}
 
 terminationGracePeriodSeconds: 5
 
-nodeSelector:
-  kubernetes.io/hostname: "worker-rt-00"
+# nodeSelector:
+#   kubernetes.io/hostname: "worker-rt-00"
 
 nodeName:

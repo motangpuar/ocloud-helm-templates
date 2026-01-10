@@ -1,11 +1,11 @@
 ---
 {{- if .Values.multus.n2Interface.create }}
 apiVersion: "k8s.cni.cncf.io/v1"
-kind: NetworkAttachmentDefinition 
+kind: NetworkAttachmentDefinition
 metadata:
   name: {{ .Chart.Name }}-n2
 spec:
-  config: '{ 
+  config: '{
       "cniVersion": "0.3.1",
       "type": "macvlan",
       "master": {{- cat .Values.multus.n2Interface.hostInterface | nospace | quote }},
@@ -14,7 +14,7 @@ spec:
         "type": "static",
         "addresses": [
                 {
-                        "address": {{- cat .Values.multus.n2Interface.IPadd "/" .Values.multus.n2Interface.Netmask | nospace | quote }}
+                  "address": {{- cat .Values.multus.n2Interface.IPadd "/" .Values.multus.n2Interface.Netmask | nospace | quote }}
                 }
         ]
         {{- if .Values.multus.n2Interface.routes }}
@@ -26,11 +26,11 @@ spec:
 ---
 {{- if .Values.multus.n3Interface.create }}
 apiVersion: "k8s.cni.cncf.io/v1"
-kind: NetworkAttachmentDefinition 
+kind: NetworkAttachmentDefinition
 metadata:
   name: {{ .Chart.Name }}-n3
 spec:
-  config: '{ 
+  config: '{
       "cniVersion": "0.3.1",
       "type": "macvlan",
       "master": {{- cat .Values.multus.n3Interface.hostInterface | nospace | quote }},
@@ -39,7 +39,7 @@ spec:
         "type": "static",
         "addresses": [
                 {
-                        "address": {{- cat .Values.multus.n3Interface.IPadd "/" .Values.multus.n3Interface.Netmask | nospace | quote }}
+                  "address": {{- cat .Values.multus.n3Interface.IPadd "/" .Values.multus.n3Interface.Netmask | nospace | quote }}
                 }
         ]
         {{- if .Values.multus.n3Interface.routes }}

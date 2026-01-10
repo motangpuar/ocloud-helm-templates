@@ -1,0 +1,42 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: fh-sriov-up-kepler
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: fh_sriov_up_kepler
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  priority: 11
+
+  mtu: 9216
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'ens7f0#0-1'     # Same device specified by rootDevices
+    rootDevices:
+      - '0000:ca:00.0'
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: fh-sriov-cp-kepler
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: fh_sriov_cp_kepler
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  priority: 12
+  mtu: 9216
+  deviceType: vfio-pci
+  isRdma: false
+  numVfs: 4
+  linkType: eth
+  nicSelector:
+    pfNames:
+      - 'ens7f0#2-3'     # Same device specified by rootDevices
+    rootDevices:
+      - '0000:ca:00.0'
