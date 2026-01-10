@@ -108,8 +108,8 @@ spec:
             sed -e ${E} $CONF | tee /tmp/du.conf;
             echo "[INFO] C-Plane PCI: $C_PLANE_PCI_ADD";
             echo "[INFO] U-Plane PCI: $U_PLANE_PCI_ADD";
-            /bin/sleep infinity;
             exec /opt/oai-gnb/bin/nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS;
+            #/bin/sleep infinity;
         {{- else}}
         command:
           - /bin/sleep
