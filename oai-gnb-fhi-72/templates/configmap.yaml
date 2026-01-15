@@ -13,7 +13,7 @@ data:
     (
      {
         ////////// Identification parameters:
-        gNB_ID    =  0xe12;
+        gNB_ID    =  0xe33;
         gNB_name  =  "{{ .Values.config.gnbName }}";
 
         // Tracking area code, 0x0000 and 0xfffe are reserved values
