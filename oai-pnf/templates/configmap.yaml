@@ -25,7 +25,7 @@ data:
       phase_compensation = 0; # needs to match O-RU configuration
     }
     );
-    
+
     RUs = (
     {
       local_rf       = "no";
@@ -44,7 +44,7 @@ data:
       do_precoding   = 0; # needs to match O-RU configuration
     }
     );
-    
+
     log_config :
     {
       global_log_level = "info";
@@ -57,13 +57,13 @@ data:
       ngap_log_level   = "info";
       f1ap_log_level   = "info";
     };
-    
+
     fhi_72 = {
       dpdk_devices = ("@C_PLANE_PCI_ADD@", "@U_PLANE_PCI_ADD@");
       dpdk_iova_mode = "{{ .Values.fhi72.dpdk_iova_mode }}";
       system_core = @SYSTEM_CORE@;
       io_core = @IO_CORE@;
-      worker_cores = (@WORKER_CORE_0@, @WORKER_CORE_1@);
+      worker_cores = (@WORKER_CORE@);
       du_addr = ("{{ .Values.multus.ruInterface.cPlaneMacAdd }}", "{{ .Values.multus.ruInterface.uPlaneMacAdd }}");
       ru_addr = ("{{ .Values.config.ruCPlaneMacAdd }}", "{{ .Values.config.ruUPlaneMacAdd }}");
       mtu = {{ .Values.multus.ruInterface.mtu }};

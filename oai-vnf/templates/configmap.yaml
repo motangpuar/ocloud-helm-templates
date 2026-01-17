@@ -17,9 +17,9 @@ data:
         // Tracking area code, 0x0000 and 0xfffe are reserved values
         tracking_area_code  = {{ .Values.config.tac}} ;
         plmn_list = ({ mcc = {{ .Values.config.mcc}}; mnc = {{ .Values.config.mnc}}; mnc_length = 2; snssaiList = ({ sst = {{ .Values.config.sst}}}) });
-    
+
         nr_cellid = 1;
-    
+
         ////////// Physical parameters:
         pdsch_AntennaPorts_XP = 2;
         pdsch_AntennaPorts_N1 = 2;
@@ -31,7 +31,7 @@ data:
         force_256qam_off      = 0;
         force_UL256qam_off    = 1;
        # sib1_tda			        = 15;
-    
+
         servingCellConfigCommon = (
         {
      #spCellConfigCommon
@@ -150,10 +150,10 @@ data:
             SCTP_INSTREAMS  = 2;
             SCTP_OUTSTREAMS = 2;
         };
-    
+
             ////////// AMF parameters:
         amf_ip_address = ({ ipv4 = "@AMF_IP_ADDRESS@"; });
-    
+
         NETWORK_INTERFACES :
         {
             GNB_IPV4_ADDRESS_FOR_NG_AMF              = "@N2_IP_ADDRESS@";
@@ -162,7 +162,7 @@ data:
         };
       }
     );
-    
+
     MACRLCs = (
             {
             num_cc = 1;
@@ -182,8 +182,8 @@ data:
             ul_max_mcs                  = 28;
             }
     )
-    
-    
+
+
     L1s = (
     {
       num_cc = 1;
@@ -198,43 +198,43 @@ data:
       phase_compensation = 0; # needs to match O-RU configuration
     }
     );
-    
-    RUs = (
-    {
-      local_rf       = "no";
-      nb_tx          = 4;
-      nb_rx          = 4;
-      att_tx         = 0;
-      att_rx         = 0;
-      bands          = [78];
-      max_pdschReferenceSignalPower = -27;
-      max_rxgain                    = 75;
-      sf_extension                  = 0;
-      eNB_instances  = [0];
-      ru_thread_core = 6;
-      sl_ahead       = 10;
-      tr_preference  = "raw_if4p5"; # important: activate FHI7.2
-      do_precoding   = 0; # needs to match O-RU configuration
-    }
-    );
-    
+
+    # RUs = (
+    # {
+    #   local_rf       = "no";
+    #   nb_tx          = 4;
+    #   nb_rx          = 4;
+    #   att_tx         = 0;
+    #   att_rx         = 0;
+    #   bands          = [78];
+    #   max_pdschReferenceSignalPower = -27;
+    #   max_rxgain                    = 75;
+    #   sf_extension                  = 0;
+    #   eNB_instances  = [0];
+    #   ru_thread_core = 6;
+    #   sl_ahead       = 10;
+    #   tr_preference  = "raw_if4p5"; # important: activate FHI7.2
+    #   do_precoding   = 0; # needs to match O-RU configuration
+    # }
+    # );
+
     security = {
       # preferred ciphering algorithms
       # the first one of the list that an UE supports in chosen
       # valid values: nea0, nea1, nea2, nea3
       ciphering_algorithms = ( "nea0" );
-    
+
       # preferred integrity algorithms
       # the first one of the list that an UE supports in chosen
       # valid values: nia0, nia1, nia2, nia3
       integrity_algorithms = ( "nia2", "nia0" );
-    
+
       # setting 'drb_ciphering' to "no" disables ciphering for DRBs, no matter
       # what 'ciphering_algorithms' configures; same thing for 'drb_integrity'
       drb_ciphering = "yes";
       drb_integrity = "no";
     };
-    
+
     log_config :
     {
       global_log_level                      ="info";

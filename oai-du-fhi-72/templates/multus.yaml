@@ -1,13 +1,13 @@
 ---
 {{- if .Values.multus.f1Interface.create }}
 apiVersion: "k8s.cni.cncf.io/v1"
-kind: NetworkAttachmentDefinition 
+kind: NetworkAttachmentDefinition
 metadata:
   name: {{ .Release.Name }}-f1
   labels:
     app: oai-du
 spec:
-  config: '{ 
+  config: '{
       "cniVersion": "0.3.1",
       "name": "{{ .Release.Name }}-f1",
       "plugins": [

@@ -8,12 +8,12 @@ nfimage:   # image name either locally present or in a public/private repository
   #version: rhel9
 
   # Develop Branch
-  repository: oaisoftwarealliance/oai-gnb-fhi72
-  version: 2025.w30
+  # repository: oaisoftwarealliance/oai-gnb-fhi72
+  # version: 2025.w30
 
   # Ming NFAPI
   repository: bmw.ece.ntust.edu.tw/infidel/oai-gnb
-  version: latest
+  version: nfapi
 
 
   pullPolicy: IfNotPresent
@@ -130,14 +130,14 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 4
+      cpu: 2
       memory: 16Gi
     tcpdump:
       cpu: 100m
       memory: 128Mi
   requests:
     nf:
-      cpu: 4
+      cpu: 2
       memory: 16Gi
     tcpdump:
       cpu: 100m
