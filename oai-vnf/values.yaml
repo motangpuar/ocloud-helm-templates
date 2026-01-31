@@ -130,15 +130,17 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 2
-      memory: 16Gi
+      cpu: 4
+      memory: 6Gi
+      hugepages: 2Gi
     tcpdump:
       cpu: 100m
       memory: 128Mi
   requests:
     nf:
-      cpu: 2
-      memory: 16Gi
+      cpu: 4
+      memory: 6Gi
+      hugepages: 2Gi
     tcpdump:
       cpu: 100m
       memory: 128Mi

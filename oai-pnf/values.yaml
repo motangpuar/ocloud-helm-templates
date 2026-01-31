@@ -143,7 +143,7 @@ resources:
   define: true
   limits:
     nf:
-      cpu: 8
+      cpu: 10
       memory: 16Gi
       hugepages: 16Gi
       sriovCplaneClaim:
@@ -157,7 +157,7 @@ resources:
       memory: 128Mi
   requests:
     nf:
-      cpu: 8
+      cpu: 10
       memory: 16Gi
       hugepages: 16Gi
       sriovCplaneClaim:
