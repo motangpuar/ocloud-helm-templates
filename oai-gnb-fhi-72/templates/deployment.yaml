@@ -19,8 +19,6 @@ spec:
     {{- if or .Values.multus.n2Interface.create .Values.multus.ruInterface.create }}
       annotations:
         cpu-quota.crio.io: "disable"
-        cpu-load-balancing.crio.io: "disable"
-        irq-load-balancing.crio.io: "disable"
         k8s.v1.cni.cncf.io/networks: |
           [
           {{- if .Values.multus.n2Interface.create }}
@@ -108,6 +106,7 @@ spec:
             sed -e ${E} $CONF | tee /tmp/du.conf;
             echo "[INFO] C-Plane PCI: $C_PLANE_PCI_ADD";
             echo "[INFO] U-Plane PCI: $U_PLANE_PCI_ADD";
+            ip link set dev eth0 mtu 9216;
             exec /opt/oai-gnb/bin/nr-softmodem -O /tmp/du.conf $USE_ADDITIONAL_OPTIONS;
         {{- else}}
         command:
@@ -172,9 +171,10 @@ spec:
       - configMap:
           name: {{ .Chart.Name }}-configmap
         name: configuration
-      - emptyDir:
-          medium: HugePages-1Gi
-        name: hugepage
+      - name: hugepage
+        hostPath:
+          path: /dev/hugepages
+          type: Directory
       - name: vfio
         hostPath:
           path: /dev/vfio

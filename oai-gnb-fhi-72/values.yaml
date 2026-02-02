@@ -20,9 +20,10 @@ nfimage:   # image name either locally present or in a public/private repository
 
 metadata:
   annotations:
-    cpu-load-balancing.crio.io: "disable"
+    #cpu-load-balancing.crio.io: "disable"
     cpu-quota.crio.io: "disable"
-    irq-load-balancing.crio.io: "disable"
+    #irq-load-balancing.crio.io: "disable"
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
