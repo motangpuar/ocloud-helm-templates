@@ -14,9 +14,9 @@ nfimage:   # image name either locally present or in a public/private repository
   # version: rhel9
 
   # Develop Branch
-  repository: oaisoftwarealliance/oai-gnb-fhi72
-  version: 2025.w30
-  pullPolicy: IfNotPresent
+  repository: bmw.ece.ntust.edu.tw/ravi/oai-gnb-fhi72-2026.w03
+  version: latest
+  pullPolicy: Always
 
 # good to use when pulling images from docker-hub mention
 #imagePullSecrets:
@@ -69,8 +69,8 @@ multus:
     hostInterface: "bond0"      # Interface of the host machine on which this pod will be scheduled
   ruInterface:            #Only needed if using a ethernet based RU/USRP
     create: true
-    mtu: 9216
-    vlan: 3 #LiteON New 6 LiteON Old, 4
+    mtu: 9000
+    vlan: 103 #LiteON New 6 LiteON Old, 4
     cPlaneMacAdd: 00:11:22:33:44:66  #vvdn 76:76:64:6e:00:01 #benetel 00:11:22:33:44:67
     uPlaneMacAdd: 00:11:22:33:44:66 #vvdn 76:76:64:6e:00:02 #benetel 00:11:22:33:44:66
     sriovNetworkNamespace: sriov-network-operator
@@ -82,7 +82,7 @@ multus:
 # Example config files --> https://gitlab.eurecom.fr/oai/openairinterface5g/-/tree/develop/targets/PROJECTS/GENERIC-NR-5GC/CONF
 config:
   timeZone: "Asia/Taipei"
-  useAdditionalOptions: "--log_config.global_log_options level,nocolor,time"
+  useAdditionalOptions: "--telnetsrv --telnetsrv.shrmod o1 --log_config.global_log_options level,nocolor,time"
   gnbName: "oai-gnb-00"
   mcc: "001"   # check the information with AMF, SMF, UPF
   mnc: "01"    # check the information with AMF, SMF, UPF
@@ -90,9 +90,9 @@ config:
   sst: "1"  #currently only 4 standard values are allowed 1,2,3,4
   sd: "66051"
   #LiteON
-  ruCPlaneMacAdd: 00:e0:0c:00:ae:06
-  ruUPlaneMacAdd: 00:e0:0c:00:ae:06
-  amfhost: "192.168.8.108" # BMW Open5GS
+  ruCPlaneMacAdd: 48:21:0b:4b:dc:41
+  ruUPlaneMacAdd: 48:21:0b:4b:dc:41
+  amfhost: "192.168.8.82" # BMW Open5GS
   n2IfName: "eth0"    # if multus.n2Interface.create is true then use n2
   n3IfName: "eth0"   #if multus.n3Interface.create is true then use n3 or you can only use 1 interface n2 or eth0
 

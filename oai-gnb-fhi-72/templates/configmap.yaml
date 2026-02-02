@@ -296,3 +296,9 @@ data:
         });
     };
 
+    e2_agent = {
+      near_ric_ip_addr = "192.168.8.14";
+      #sm_dir = "/path/where/the/SMs/are/located/"
+      sm_dir = "/usr/local/lib/flexric/"
+  
+    };

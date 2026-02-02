@@ -116,6 +116,8 @@ spec:
         env:
           #- name: RTE_SOCKET_MEM
           #value: "8192,8192"
+          - name: LD_LIBRARY_PATH
+            value: "/usr/local/lib:/opt/oai-gnb/lib:/usr/local/lib/flexric"
           - name: RTE_HUGE_DIR
             value: /dev/hugepages
           - name: TZ
